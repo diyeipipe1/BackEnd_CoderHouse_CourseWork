@@ -167,7 +167,7 @@ class ProductManager {
 // Use folder above mine
 const productManager = new ProductManager("./products.json");
 
-productManager.addProduct("Rosas", "Flores lindas", 30, "ubicacionImagen.txt", "rlr01", 15);
+//productManager.addProduct("Rosas", "Flores lindas", 30, "ubicacionImagen.txt", "rlr01", 15);
 //productManager.addProduct("Claveles", "Flores", 30, "ubicacionImagen2.txt", "rlr02", 25);
 //productManager.addProduct("Alfajores", "Rico", 30, "ubicacionImagen3.txt", "rlr03", 25);
 
