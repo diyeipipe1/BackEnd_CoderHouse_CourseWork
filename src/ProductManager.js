@@ -1,6 +1,6 @@
-const fs= require("fs");
+import fs from "fs"
 
-class ProductManager {
+export default class ProductManager {
     constructor(path){
         this.path = path;
         this.products = [];
@@ -167,9 +167,18 @@ class ProductManager {
 // Use folder above mine
 const productManager = new ProductManager("./products.json");
 
-//productManager.addProduct("Rosas", "Flores lindas", 30, "ubicacionImagen.txt", "rlr01", 15);
-//productManager.addProduct("Claveles", "Flores", 30, "ubicacionImagen2.txt", "rlr02", 25);
-//productManager.addProduct("Alfajores", "Rico", 30, "ubicacionImagen3.txt", "rlr03", 25);
+//productManager.addProduct("Rosas", "Flores lindas", 11, "ubicacionImagen.txt", "rlr01", 15);
+//productManager.addProduct("Claveles", "Flores", 10, "ubicacionImagen2.txt", "rlr02", 5);
+//productManager.addProduct("Alfajores", "Rico", 8, "ubicacionImagen3.txt", "rlr03", 5); //Stock y price
+//productManager.addProduct("Chocolates", "En forma de jet", 12, "ubicacionImagen4.txt", "rlr04", 5);
+//productManager.addProduct("Pulsera Onix", "Para las buenas energías", 30, "ubicacionImagen5.txt", "rlr05", 8);
+//productManager.addProduct("Sobre rosado", "Para las cartas", 100, "ubicacionImagen6.txt", "rlr06", 2);
+//productManager.addProduct("Velas", "Enciende la luz", 40, "ubicacionImagen7.txt", "rlr07", 4);
+//productManager.addProduct("Cobija", "Que frío", 10, "ubicacionImagen8.txt", "rlr08", 20);
+//productManager.addProduct("Pantuflas", "De a una pa que combinen", 29, "ubicacionImagen9.txt", "rlr09", 7);
+//productManager.addProduct("Collar de rosa", "Atrae sangre", 10, "ubicacionImagen10.txt", "rlr10", 12);
+//productManager.addProduct("Aretes", "Menos es más", 8, "ubicacionImagen11.txt", "rlr11", 8);
+//productManager.addProduct("Sueter", "De los de navidad", 10, "ubicacionImagen12.txt", "rlr12", 25);
 
 //productManager.getProductById(2)
 //productManager.getProductById(22)
