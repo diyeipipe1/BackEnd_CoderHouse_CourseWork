@@ -23,16 +23,6 @@ class ProductManager {
         }
     } 
 
-    // Carga los datos en nuestro array
-    async setProducts(){
-        try {
-            let products = await fs.promises.readFile(this.path, 'utf-8')
-            this.products = JSON.parse(products)
-        } catch (error) {
-            throw error
-        }
-    }
-
     // Create
     async addProduct(title, description, price, thumbnail, code, stock){
         try {
@@ -40,12 +30,15 @@ class ProductManager {
                 await this.initManager()
             }
 
+            // Error checking, see if there's missing data
             if (title && description && price && thumbnail && code && stock){
+                // Code must be unique
                 if (this.products.some(prod => prod.code === code)) {
                     console.log('código repetido')
                     return null
                 }
 
+                // Find maxID in file to set new ID as one higher
                 let maxID = 0
                 if (this.products.length>0) {
                     this.products.forEach((prod) => {
@@ -65,8 +58,11 @@ class ProductManager {
                     'stock': stock
                 }
 
+                // Save data in file and in array
                 this.products.push(product)
                 await fs.promises.writeFile(this.path, JSON.stringify(this.products))
+
+                // Return product added
                 return product
             }else{
                 console.log("faltan datos")
@@ -78,11 +74,12 @@ class ProductManager {
     }
 
     // Read
-    getProducts= async() =>{
+    async getProducts(){
         try {
             if (!this.init) {
                 await this.initManager()
             }
+
             console.log(this.products)
             return this.products
         }catch (error){
@@ -91,7 +88,7 @@ class ProductManager {
     }
 
     // Read
-    getProductById= async(id) => {
+    async getProductById(id){
         try {
             if (!this.init) {
                 await this.initManager()
@@ -102,6 +99,7 @@ class ProductManager {
                 console.log(product)
                 return product
             }
+
             console.log("No hay producto con tal ID")
             return null
         } catch (error) {
@@ -115,13 +113,19 @@ class ProductManager {
             if (!this.init) {
                 await this.initManager()
             }
+
             let productAct = await this.getProductById(id)
             if (productAct){
+                // Set the new data for the product if it arrived on the Object. 
+                // If not, leave the data it had already
                 productAct.title = productNew?.title || productAct.title
                 productAct.description = productNew?.description || productAct.description
                 productAct.price = productNew?.price || productAct.price
                 productAct.thumbnail = productNew?.thumbnail || productAct.thumbnail
                 productAct.stock = productNew?.stock || productAct.stock
+
+                // Uses map to change in the array the actual product with the updated product if the IDs match. 
+                // All other products will be safe
                 let products = this.products.map(prod => prod.id === id ? productAct : prod)
                 await fs.promises.writeFile(this.path, JSON.stringify(products))
                 console.log(productAct)
@@ -143,7 +147,11 @@ class ProductManager {
 
             let product = await this.getProductById(id)
             if (product) {
-                let products = this.products.filter(el => el.id !== id)
+                // Uses filter to keep all products but the one where the id matches the parameter id
+                let products = this.products.filter(prod => prod.id !== id)
+                this.products = products
+
+                // Overwrites updated product array onto the file 
                 await fs.promises.writeFile(this.path, JSON.stringify(products))
                 return true
             } else {
@@ -156,10 +164,10 @@ class ProductManager {
     }
 }
 
+// Use folder above mine
+const productManager = new ProductManager("./products.json");
 
-const productManager = new ProductManager("./archivo.json");
-
-//productManager.addProduct("Rosas", "Flores lindas", 30, "ubicacionImagen.txt", "rlr01", 15);
+productManager.addProduct("Rosas", "Flores lindas", 30, "ubicacionImagen.txt", "rlr01", 15);
 //productManager.addProduct("Claveles", "Flores", 30, "ubicacionImagen2.txt", "rlr02", 25);
 //productManager.addProduct("Alfajores", "Rico", 30, "ubicacionImagen3.txt", "rlr03", 25);
 
