@@ -80,7 +80,6 @@ export default class ProductManager {
                 await this.initManager()
             }
 
-            console.log(this.products)
             return this.products
         }catch (error){
             throw error;
@@ -96,7 +95,6 @@ export default class ProductManager {
 
             let product = this.products.find(prod => prod.id === id)
             if (product) {
-                console.log(product)
                 return product
             }
 
