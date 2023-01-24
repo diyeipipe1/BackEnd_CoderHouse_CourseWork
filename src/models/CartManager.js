@@ -73,7 +73,7 @@ export default class CartManager{
 
                 // Save data in file and in array
                 this.carts.push(cart)
-                await fs.promises.writeFile(this.path, JSON.stringify(this.carts))
+                await fs.promises.writeFile(this.path, JSON.stringify(this.carts, null, 2))
 
                 // Return product added
                 return cart
@@ -129,7 +129,7 @@ export default class CartManager{
                     done= true
                 }
 
-                await fs.promises.writeFile(this.path, JSON.stringify(this.carts))
+                await fs.promises.writeFile(this.path, JSON.stringify(this.carts, null, 2))
 
                 // Return operation status
                 return done

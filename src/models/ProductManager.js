@@ -67,7 +67,7 @@ export default class ProductManager {
 
                 // Save data in file and in array
                 this.products.push(product)
-                await fs.promises.writeFile(this.path, JSON.stringify(this.products))
+                await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, 2))
 
                 // Return product added
                 return product
@@ -134,7 +134,7 @@ export default class ProductManager {
                 // Uses map to change in the array the actual product with the updated product if the IDs match. 
                 // All other products will be safe
                 let products = this.products.map(prod => prod.id === id ? productAct : prod)
-                await fs.promises.writeFile(this.path, JSON.stringify(products))
+                await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2))
                 
                 return productAct
             }else{
@@ -160,7 +160,7 @@ export default class ProductManager {
                 this.products = products
 
                 // Overwrites updated product array onto the file 
-                await fs.promises.writeFile(this.path, JSON.stringify(products))
+                await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2))
                 return true
             } else {
                 console.log('product to delete not found')
