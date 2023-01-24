@@ -1,5 +1,6 @@
 import express from "express";
 import handlebars from "express-handlebars";
+import { Server } from "socket.io";
 import __dirname from './utils.js'
 import productRouter from "./routes/products.routes.js";
 import cartRouter from "./routes/carts.routes.js";
@@ -23,7 +24,12 @@ app.use('/api/carts', cartRouter);
 app.use('/', viewsRouter)
 
 // Raise the server
-app.listen(8080, () => {console.log("Server raised")});
+const httpServer = app.listen(8080, () => {console.log("Server raised")});
+const socketServer = new Server(httpServer);
+
+// Use a socket
+const viewNameSpace = socketServer.of("/realtimeproducts");
+export default viewNameSpace;
 
 
 

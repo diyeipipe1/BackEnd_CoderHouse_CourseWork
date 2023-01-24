@@ -1,0 +1,40 @@
+<h1>Products</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>description</th>
+            <th>price</th>
+            <th>thumbnail</th>
+            <th>code</th>
+            <th>stock</th>
+            <th>category</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each products}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{title}}</td>
+                <td>{{description}}</td>
+                <td>{{price}}</td>
+                <td>{{thumbnail}}</td>
+                <td>{{code}}</td>
+                <td>{{stock}}</td>
+                <td>{{category}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<form id="deleteForm">
+  <label for="productId">Product ID:</label>
+  <input type="text" id="productId" name="productId">
+  <br>
+  <input type="submit" value="Eliminate product">
+</form>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realTimeProducts.js"></script>
