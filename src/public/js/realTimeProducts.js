@@ -18,6 +18,7 @@ deleteForm.addEventListener("submit", event => {
 })
 
 /*
+TODO: Me
 socket.on("updateList", data => {
     const template = Handlebars.compile(document.getElementById("realTimeProducts-template").innerHTML);
     const container = document.getElementById("realTimeProducts-container");
