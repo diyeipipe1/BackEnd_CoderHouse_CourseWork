@@ -1,6 +1,7 @@
 const socket = io("localhost:8080/realtimeproducts");
 
 const deleteForm = document.getElementById("deleteForm");
+const table = document.getElementById("bodyProds");
 
 // When I submit the form, do this or that
 deleteForm.addEventListener("submit", event => {
@@ -8,7 +9,6 @@ deleteForm.addEventListener("submit", event => {
     const id = document.getElementById("productId").value;
     // Method delete to specific URI, tell server if succesfull with emit
     fetch(`/api/products/${id}`, { method: 'DELETE' })
-    .then(res => res.json())
     .then(_ => {
         socket.emit("update");
     })
@@ -17,10 +17,23 @@ deleteForm.addEventListener("submit", event => {
     });
 })
 
-/*
-TODO: Me
+
 socket.on("updateList", data => {
-    const template = Handlebars.compile(document.getElementById("realTimeProducts-template").innerHTML);
-    const container = document.getElementById("realTimeProducts-container");
-    container.innerHTML = template({ products: data });
-})*/
+    // TODO: Llega aún todos los prods?
+    console.log(data)
+    table.innerHTML = "";
+    for(let product of data) {
+        let row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${product.id}</td>
+            <td>${product.title}</td>
+            <td>${product.description}</td>
+            <td>${product.price}</td>
+            <td>${product.thumbnail}</td>
+            <td>${product.code}</td>
+            <td>${product.stock}</td>
+            <td>${product.category}</td>
+        `;
+        table.appendChild(row);
+    }
+})
