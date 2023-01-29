@@ -1,4 +1,5 @@
 import express from "express";
+import __dirname from '../utils.js'
 import ProductManager from "../models/ProductManager.js";
 
 // Bring the module
@@ -9,7 +10,7 @@ router.use(express.json())
 router.use(express.urlencoded({extended: true}))
 
 // activate the product manager
-const productManager = new ProductManager("./src/products.json")
+const productManager = new ProductManager(__dirname+"/products.json")
 
 // Get all or Get limited number by query ?=limit 
 router.get("/", async(req, res) => {
