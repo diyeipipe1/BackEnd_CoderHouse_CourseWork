@@ -1,6 +1,7 @@
 import express from "express";
 import __dirname from '../utils.js'
 import ProductManager from "../dao/filemanagers/ProductManager.js";
+import ProductDBManager from "../dao/dbmanagers/ProductDBManager.js";
 
 // Bring the module
 const router = express.Router();
@@ -11,6 +12,7 @@ router.use(express.urlencoded({extended: true}))
 
 // activate the product manager
 const productManager = new ProductManager(__dirname+"/public/data/products.json")
+const productDBManager = new ProductDBManager()
 
 // Get all or Get limited number by query ?=limit 
 router.get("/", async(req, res) => {
@@ -18,8 +20,9 @@ router.get("/", async(req, res) => {
     try {
         let limit = req.query.limit
 
-        // get the products
-        let products = await productManager.getProducts();
+        // get the products (one is FileSystem and the other is Mongoose)
+        //let products = await productManager.getProducts();
+        let products = await productDBManager.getProducts();
 
         // If a limit was sent by query, limit the products shown
         if (limit){
@@ -32,7 +35,7 @@ router.get("/", async(req, res) => {
         res.send(products)
     } catch (error) {
         // Error handling if the productManager sends an error
-        return res.status(500).send({status: "InternalServerError", error: "there was an error reading the data"}) 
+        return res.status(500).send({status: "InternalServerError", error: error.message}) 
     }
 })
 

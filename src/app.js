@@ -6,9 +6,19 @@ import productRouter from "./routes/products.routes.js";
 import cartRouter from "./routes/carts.routes.js";
 import viewsRouter from "./routes/views.routes.js";
 import ProductManager from "./dao/filemanagers/ProductManager.js";
+import mongoose from "mongoose";
 
 // Bring the module
 const app = express();
+app.use(express.json()); // Important to work with JSON
+
+// Connect to mongoDB
+mongoose.connect('mongodb+srv://diyeipipe:coderhouse123@coderhousecluster.hh51n5a.mongodb.net/?retryWrites=true&w=majority', (error) => {
+    if (error){
+        console.log(error)
+        process.exit();
+    }
+})
 
 // Handlebars
 app.engine('handlebars', handlebars.engine());
