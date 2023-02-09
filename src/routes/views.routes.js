@@ -1,6 +1,6 @@
 import express from "express";
 import __dirname from '../utils.js'
-import ProductManager from "../models/ProductManager.js";
+import ProductManager from "../dao/filemanagers/ProductManager.js";
 
 // Bring the module
 const router = express.Router();
@@ -10,7 +10,7 @@ router.use(express.json())
 router.use(express.urlencoded({extended: true}))
 
 // activate the product manager
-const productManager = new ProductManager(__dirname+"/products.json")
+const productManager = new ProductManager(__dirname+"/public/data/products.json")
 
 // Get all products
 router.get("/", async(req, res) => {

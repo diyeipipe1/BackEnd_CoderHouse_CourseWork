@@ -1,6 +1,6 @@
 import express from "express";
 import __dirname from '../utils.js'
-import CartManager from "../models/CartManager.js";
+import CartManager from "../dao/filemanagers/CartManager.js";
 
 // Bring the module
 const router = express.Router();
@@ -10,7 +10,7 @@ router.use(express.json())
 router.use(express.urlencoded({extended: true}))
 
 // activate the cart manager
-const cartManager = new CartManager(__dirname+"/carrito.json")
+const cartManager = new CartManager(__dirname+"/public/data/carrito.json")
 
 // Create new cart
 router.post("/", async(req, res) => {

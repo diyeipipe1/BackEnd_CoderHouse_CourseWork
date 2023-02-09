@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "title": "Alfajores",
+    "description": "Rico",
+    "price": 8,
+    "thumbnail": "ubicacionImagen3.txt",
+    "code": "rlr03",
+    "stock": 5,
+    "category": "Comida",
+    "status": true
+  },
+  {
+    "id": 5,
+    "title": "Velas",
+    "description": "Enciende la luz",
+    "price": 40,
+    "thumbnail": "ubicacionImagen7.txt",
+    "code": "rlr07",
+    "stock": 4,
+    "category": "Trinquete",
+    "status": true
+  },
+  {
+    "id": 6,
+    "title": "Pulsera Onix",
+    "description": "Para las buenas energías",
+    "price": 30,
+    "thumbnail": "ubicacionImagen5.txt",
+    "code": "rlr05",
+    "stock": 8,
+    "category": "Trinquete",
+    "status": true
+  },
+  {
+    "id": 7,
+    "title": "Cobija",
+    "description": "Que frío",
+    "price": 10,
+    "thumbnail": "ubicacionImagen8.txt",
+    "code": "rlr08",
+    "stock": 20,
+    "category": "Ropa",
+    "status": true
+  },
+  {
+    "id": 8,
+    "title": "Sobre rosado",
+    "description": "Para las cartas",
+    "price": 100,
+    "thumbnail": "ubicacionImagen6.txt",
+    "code": "rlr06",
+    "stock": 2,
+    "category": "Trinquete",
+    "status": true
+  },
+  {
+    "id": 9,
+    "title": "Pantuflas",
+    "description": "De a una pa que combinen",
+    "price": 29,
+    "thumbnail": "ubicacionImagen9.txt",
+    "code": "rlr09",
+    "stock": 7,
+    "category": "Ropa",
+    "status": true
+  },
+  {
+    "id": 10,
+    "title": "Collar de rosa",
+    "description": "Atrae sangre",
+    "price": 10,
+    "thumbnail": "ubicacionImagen10.txt",
+    "code": "rlr10",
+    "stock": 12,
+    "category": "Trinquete",
+    "status": true
+  },
+  {
+    "id": 11,
+    "title": "Aretes",
+    "description": "Menos es más",
+    "price": 8,
+    "thumbnail": "ubicacionImagen11.txt",
+    "code": "rlr11",
+    "stock": 8,
+    "category": "Trinquete",
+    "status": true
+  },
+  {
+    "id": 12,
+    "title": "Sueter",
+    "description": "De los de navidad",
+    "price": 10,
+    "thumbnail": "ubicacionImagen12.txt",
+    "code": "rlr12",
+    "stock": 25,
+    "category": "Ropa",
+    "status": true
+  },
+  {
+    "id": 13,
+    "title": "Rosas",
+    "description": "Flores lindas",
+    "price": 11,
+    "thumbnail": "ubicacionImagen.txt",
+    "code": "post01",
+    "stock": 15,
+    "category": "Flor",
+    "status": true
+  }
+]
