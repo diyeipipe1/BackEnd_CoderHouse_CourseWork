@@ -12,7 +12,7 @@ Swal.fire({
 }).then(result =>{
     user = result.value
     socket.emit("authenticated", user)
-    socket
+    socket.emit("chatMake") 
 })
 
 
@@ -32,6 +32,16 @@ chatBox.addEventListener("keyup", event => {
 // and then fill it with the accum data from the logs that is kept on the cloud and arrives as data
 socket.on("messageLog", data => {
     if (!user) return; // Si user no existe, ruuun
+    const messageLog = document.getElementById("log");
+    let messages = '';
+    data.forEach(msgObj => {
+        messages += `${msgObj.user} dice:  ${msgObj.message} <br/>`
+    });
+    messageLog.innerHTML=messages;
+})
+
+// load data as soon as page is set
+socket.on("chatMakeJS", data => {
     const messageLog = document.getElementById("log");
     let messages = '';
     data.forEach(msgObj => {

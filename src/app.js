@@ -78,6 +78,12 @@ chatNameSpace.on("connection", socket => {
     socket.on("authenticated", data => {
         socket.broadcast.emit("newUserConnected", data);
     })
+
+    //As soon as you connect, get the chat up
+    socket.on("chatMake", async () =>{
+        logsWSocketMessageUser = await messagesDBManager.getMessages()
+        chatNameSpace.emit('chatMakeJS', logsWSocketMessageUser)
+    })
 })
 
 
