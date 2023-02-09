@@ -12,6 +12,7 @@ Swal.fire({
 }).then(result =>{
     user = result.value
     socket.emit("authenticated", user)
+    socket
 })
 
 
@@ -33,10 +34,9 @@ socket.on("messageLog", data => {
     if (!user) return; // Si user no existe, ruuun
     const messageLog = document.getElementById("log");
     let messages = '';
-    data.logsWSocketMessageUser.forEach(msgObj => {
-        messages += `${msgObj.messageNuser.user} dice:  ${msgObj.messageNuser.message} <br/>`
+    data.forEach(msgObj => {
+        messages += `${msgObj.user} dice:  ${msgObj.message} <br/>`
     });
-
     messageLog.innerHTML=messages;
 })
 

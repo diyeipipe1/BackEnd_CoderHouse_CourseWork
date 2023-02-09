@@ -6,6 +6,7 @@ import productRouter from "./routes/products.routes.js";
 import cartRouter from "./routes/carts.routes.js";
 import viewsRouter from "./routes/views.routes.js";
 import ProductManager from "./dao/filemanagers/ProductManager.js";
+import MessagesDBManager from "./dao/dbmanagers/MessagesDBManager.js";
 import mongoose from "mongoose";
 
 // Bring the module
@@ -40,6 +41,7 @@ const socketServer = new Server(httpServer);
 
 // Use a socket
 const productManager = new ProductManager(__dirname+"/public/data/products.json")
+const messagesDBManager = new MessagesDBManager()
 const viewNameSpace = socketServer.of("/realtimeproducts");
 const chatNameSpace = socketServer.of('/chat');
 
@@ -56,15 +58,20 @@ viewNameSpace.on("connection", socket => {
 })
 
 // Messages to have in chat
-const logsWSocketMessageUser = []
+let logsWSocketMessageUser = []
 // When you hear a connection to me, check whats inside
 chatNameSpace.on("connection", socket => {
     console.log("Tenemos un cliente conectado")
 
     // Listeners, this one also emits with the key messageLog
-    socket.on("msg", data => {
-        logsWSocketMessageUser.push({socketid:socket.id, messageNuser:data})
-        chatNameSpace.emit('messageLog', {logsWSocketMessageUser})
+    socket.on("msg", async data => {
+        try {
+            await messagesDBManager.addMessage(data.user, data.message)
+            logsWSocketMessageUser = await messagesDBManager.getMessages()
+            chatNameSpace.emit('messageLog', logsWSocketMessageUser)
+        } catch (error) {
+          console.log(error)   
+        }
     })
 
     //Get certain data and bounce it back to listeners with key newUserConnected

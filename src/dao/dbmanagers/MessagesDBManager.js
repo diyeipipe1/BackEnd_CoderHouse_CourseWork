@@ -16,9 +16,9 @@ export default class MessagesDBManager{
     // Create
     async addMessage(user, msg){
         try {
-            let message = ProductModel.create({
-                user, 
-                msg
+            let message = await MessagesModel.create({
+                user: user, 
+                message: msg
             })
 
             // Return message added
