@@ -100,6 +100,9 @@ export default class ProductManager {
                 await this.initManager()
             }
 
+            id = Number(id)
+            if (!id){ throw new Error("the param pid is expected to be a number")}
+
             let product = this.products.find(prod => prod.id === id)
             if (product) {
                 return product
@@ -118,6 +121,9 @@ export default class ProductManager {
             if (!this.init) {
                 await this.initManager()
             }
+
+            id = Number(id)
+            if (!id){ throw new Error("the param pid is expected to be a number")}
 
             let productAct = await this.getProductById(id)
             if (productAct){
@@ -152,6 +158,9 @@ export default class ProductManager {
             if (!this.init) {
                 await this.initManager()
             }
+
+            id = Number(id)
+            if (!id){ throw new Error("the param pid is expected to be a number")}
 
             let product = await this.getProductById(id)
             if (product) {

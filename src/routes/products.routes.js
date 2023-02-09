@@ -43,12 +43,10 @@ router.get("/", async(req, res) => {
 router.get("/:pid", async(req, res) => {
     try {
         let pid = req.params.pid
-        pid = Number(pid)
-
-        if (!pid){return res.status(400).send({ status: "ParamsError", error: "the param pid is expected to be a number" })}
 
         // Get the product
-        const product = await productManager.getProductById(pid)
+        //const product = await productManager.getProductById(pid)
+        const product = await productDBManager.getProductById(pid)
 
         // If we get null then the product with given id wasn't found
         if (!product){
@@ -58,7 +56,7 @@ router.get("/:pid", async(req, res) => {
         res.send(product)
     } catch (error) {
         // Error handling if the productManager sends an error
-        return res.status(500).send({status: "InternalServerError", error: "there was an error reading the data"})
+        return res.status(500).send({status: "InternalServerError", error: error.message})
     }
 })
 
@@ -72,9 +70,11 @@ router.post("/", async(req, res) => {
             prodNew.code && prodNew.stock && prodNew.category){
 
             // Create product
-            const product = await productManager.addProduct(prodNew.title, prodNew.description, prodNew.price,
+            //const product = await productManager.addProduct(prodNew.title, prodNew.description, prodNew.price,
+            //    prodNew.thumbnail, prodNew.code, prodNew.stock, prodNew.category, prodNew.status)
+            const product = await productDBManager.addProduct(prodNew.title, prodNew.description, prodNew.price,
                 prodNew.thumbnail, prodNew.code, prodNew.stock, prodNew.category, prodNew.status)
-
+    
             // If we get something falsy then the product wasn't created correctly
             if (!product){
                 res.status(400).send({status: "NotCreatedError", error: "there was an error creating the product"})
@@ -95,12 +95,10 @@ router.put("/:pid", async(req, res) => {
     try {
         let pid = req.params.pid
         let prodNew = req.body
-        pid = Number(pid)
-
-        if (!pid){return res.status(400).send({ status: "ParamsError", error: "the param pid is expected to be a number" })}
 
         // Try to update the product with the class function
-        const prod = await productManager.updateProduct(pid, prodNew)
+        //const prod = await productManager.updateProduct(pid, prodNew)
+        const prod = await productDBManager.updateProduct(pid, prodNew)
 
 
         // If we get something falsy then the product wasn't updated correctly
@@ -119,12 +117,10 @@ router.put("/:pid", async(req, res) => {
 router.delete("/:pid", async(req, res) => {
     try {
         let pid = req.params.pid
-        pid = Number(pid)
-    
-        if (!pid){return res.status(400).send({ status: "ParamsError", error: "the param pid is expected to be a number" })}
     
         // Try to delete the product with the class function
-        const verif = await productManager.deleteProduct(pid)
+        //const verif = await productManager.deleteProduct(pid)
+        const verif = await productDBManager.deleteProduct(pid)
 
         // If we get something falsy then the product wasn't deleted correctly
         if (!verif){

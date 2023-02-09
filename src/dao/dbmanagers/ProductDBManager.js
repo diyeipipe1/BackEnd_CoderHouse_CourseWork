@@ -7,7 +7,7 @@ export default class ProductDBManager{
             // If no status was sent, set as true
             status = typeof status !== 'undefined' ? status : true;
 
-            let product = ProductModel.create(
+            let product = ProductModel.create({
                 title,
                 description,
                 price,
@@ -15,7 +15,8 @@ export default class ProductDBManager{
                 code,
                 stock,
                 category,
-                status)
+                status
+            })
 
             // Return product added
             return product
@@ -47,7 +48,11 @@ export default class ProductDBManager{
             console.log("no products with given ID")
             return null
         } catch (error) {
-            throw error
+            if ((error.message).indexOf("Cast to ObjectId failed for value") !== -1){
+                return null
+            }else{
+                throw error
+            }
         }
     } 
 
@@ -56,14 +61,15 @@ export default class ProductDBManager{
         try {
             let productAct = await this.getProductById(id)
             if (productAct){
-                result = await ProductModel.updateOne({_id:id}, productNew);
+                let result = await ProductModel.updateOne({_id:id}, productNew);
+                console.log(result)
                 
-                if (result.nModified >0){
+                if (result.modifiedCount >0){
                     let finalProduct = await this.getProductById(id)
                     return finalProduct
                 }else{
                     console.log('error updating product')
-                    throw new Error("error updating product")
+                    throw new Error("error updating product, data might be wrong type or same as current document")
                 }
             }else{
                 console.log('product to update not found')
