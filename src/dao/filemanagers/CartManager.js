@@ -24,63 +24,35 @@ export default class CartManager{
     }
 
     // Create
-    async addCart(products){
+    async addCart(){
         try {
             if (!this.init) {
                 await this.initManager()
             }
 
-            // Error checking, see if data has the correct typing
-            if (Array.isArray(products)){
-
-                // Find maxID in file to set new ID as one higher
-                let maxID = 0
-                if (this.carts.length>0) {
-                    this.carts.forEach((cart) => {
-                        if (cart.id > maxID) {
-                            maxID = cart.id
-                        }
-                    })
-                }
-
-                // Creates cart 
-                let cart = {
-                    'id': maxID + 1,
-                    'products': []
-                }
-
-                // If products in request have extra fields, don't use them. Assumes product field types are ok (todo might be revised later)
-                products.forEach((prod) =>{
-                    // Error checking, see if there's missing data
-                    if (prod.id && prod.quantity){
-
-                        if (!(typeof prod.id === "number") || !(typeof prod.quantity === "number")){
-                            console.log("Wrong type of data")
-                            throw new Error("type mismatch with one or more fields in request body")
-                        }
-                        
-                        let prodMinified = {
-                            'id': prod.id,
-                            'quantity': prod.quantity
-                        }
-    
-                        cart["products"].push(prodMinified)
-                        }else{
-                            console.log("Missing data")
-                            throw new Error("one or more products have missing required fields")
-                        }
+            // Find maxID in file to set new ID as one higher
+            let maxID = 0
+            if (this.carts.length>0) {
+                this.carts.forEach((cart) => {
+                    if (cart.id > maxID) {
+                        maxID = cart.id
+                    }
                 })
-
-                // Save data in file and in array
-                this.carts.push(cart)
-                await fs.promises.writeFile(this.path, JSON.stringify(this.carts, null, 2))
-
-                // Return product added
-                return cart
-            }else{
-                console.log("Wrong type of data")
-                throw new Error("type mismatch with one or more fields in request body")
             }
+
+            // Creates cart 
+            let cart = {
+                'id': maxID + 1,
+                'products': []
+            }
+
+            // Save data in file and in array
+            this.carts.push(cart)
+            await fs.promises.writeFile(this.path, JSON.stringify(this.carts, null, 2))
+
+            // Return product added
+            return cart
+        
         } catch (error) {
             throw error;
         }
@@ -92,6 +64,9 @@ export default class CartManager{
             if (!this.init) {
                 await this.initManager()
             }
+
+            id = Number(id)
+            if (!id){ throw new Error("the param pid is expected to be a number")}
 
             let cart = this.carts.find(cart => cart.id === id)
             if (cart) {
@@ -112,6 +87,10 @@ export default class CartManager{
             if (!this.init) {
                 await this.initManager()
             }
+
+            cid = Number(cid)
+            pid = Number(pid)
+            if ((!pid) || (!cid) || (pid<0)){ throw new Error("the param pid is expected to be a positive number")}
 
             let cart = await this.getCartById(cid)
 

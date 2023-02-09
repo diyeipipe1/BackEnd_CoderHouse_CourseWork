@@ -47,24 +47,7 @@ curl --location --request GET 'localhost:8080/api/carts/2'
 
 ----------------------------------------------------------------------------
 Post Cart
-curl --location --request POST 'localhost:8080/api/carts' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "products": [
-        {
-            "id": 2,
-            "quantity":5
-        }, 
-        {
-            "id": 3,
-            "quantity":5
-        }, 
-        {
-            "id": 4,
-            "quantity":5
-        }]
-}'
-
+curl --location --request POST 'localhost:8080/api/carts' 
 
 ----------------------------------------------------------------------------
 Post Product Cart
