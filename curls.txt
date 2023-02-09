@@ -1,0 +1,71 @@
+----------------------------------------------------------------------------
+Get products
+curl --location --request GET 'localhost:8080/api/products/?limit=3'
+
+----------------------------------------------------------------------------
+Get product
+curl --location --request GET 'localhost:8080/api/products/4'
+
+
+----------------------------------------------------------------------------
+Post product
+curl --location --request POST 'localhost:8080/api/products/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "title":"Rosas", 
+    "description":"Flores lindas", 
+    "price": 11, 
+    "thumbnail":"ubicacionImagen.txt", 
+    "code":"post04", 
+    "stock":15, 
+    "category":"Flor",
+    "status": false
+}'
+
+----------------------------------------------------------------------------
+Put product
+curl --location --request PUT 'localhost:8080/api/products/1' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "description":"Flores lindas V2", 
+    "price": 11, 
+    "thumbnail":"ubicacionImagen3.txt", 
+    "code":"post02", 
+    "stock":15, 
+    "category":"Flor"
+}'
+
+----------------------------------------------------------------------------
+Delete product
+curl --location --request DELETE 'localhost:8080/api/products/15'
+
+
+----------------------------------------------------------------------------
+Get Cart
+curl --location --request GET 'localhost:8080/api/carts/2'
+
+
+----------------------------------------------------------------------------
+Post Cart
+curl --location --request POST 'localhost:8080/api/carts' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "products": [
+        {
+            "id": 2,
+            "quantity":5
+        }, 
+        {
+            "id": 3,
+            "quantity":5
+        }, 
+        {
+            "id": 4,
+            "quantity":5
+        }]
+}'
+
+
+----------------------------------------------------------------------------
+Post Product Cart
+curl --location --request POST 'localhost:8080/api/carts/1/product/4'
