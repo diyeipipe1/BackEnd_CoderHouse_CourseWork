@@ -41,6 +41,7 @@ const socketServer = new Server(httpServer);
 // Use a socket
 const productManager = new ProductManager(__dirname+"/public/data/products.json")
 const viewNameSpace = socketServer.of("/realtimeproducts");
+const chatNameSpace = socketServer.of('/chat');
 
 // Socket set
 viewNameSpace.on("connection", socket => {
@@ -53,6 +54,25 @@ viewNameSpace.on("connection", socket => {
         socket.emit("updateList", products) 
     })
 })
+
+// Messages to have in chat
+const logsWSocketMessageUser = []
+// When you hear a connection to me, check whats inside
+chatNameSpace.on("connection", socket => {
+    console.log("Tenemos un cliente conectado")
+
+    // Listeners, this one also emits with the key messageLog
+    socket.on("msg", data => {
+        logsWSocketMessageUser.push({socketid:socket.id, messageNuser:data})
+        chatNameSpace.emit('messageLog', {logsWSocketMessageUser})
+    })
+
+    //Get certain data and bounce it back to listeners with key newUserConnected
+    socket.on("authenticated", data => {
+        socket.broadcast.emit("newUserConnected", data);
+    })
+})
+
 
 export default viewNameSpace;
 

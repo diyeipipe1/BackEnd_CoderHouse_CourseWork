@@ -41,6 +41,11 @@ router.get("/realtimeproducts", async(req, res) => {
     }
 })
 
+// Chat application
+router.get("/chat", (req, res) => {
+    res.render("chat.handlebars")
+})
+
 
 
 // export the router
