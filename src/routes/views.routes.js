@@ -50,9 +50,11 @@ router.get("/products", async (req, res) => {
     try {
         let name = "default" // TODO: por ahora no se bloquea ruta sino se usa defaults
         let email = "defaultEmail"
+        let role = "defaultRole"
         if (req.session.user){
             name = req.session.user.name
             email = req.session.user.email
+            role = req.session.user.role
         }
 
         let limit = req.query.limit || 10
@@ -73,7 +75,8 @@ router.get("/products", async (req, res) => {
           prevLink,
           pageNum, 
           name,
-          email
+          email,
+          role
         });
     } catch (err) {
         // Error handling if the productManager sends an error
