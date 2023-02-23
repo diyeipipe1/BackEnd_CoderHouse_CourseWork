@@ -76,5 +76,15 @@ router.post('/login', async(req, res) => {
     }
 })
 
+router.get("/logout", async (req, res) => {
+    try {
+        req.session.destroy();
+        console.log("Logout well done")
+        res.send("logout success!");
+    } catch (err) {
+        return res.status(400).send({status:"BadRequest", error: err.message})
+    }
+})
+
 // export the router
 export default router;
