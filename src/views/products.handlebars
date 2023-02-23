@@ -1,5 +1,6 @@
 <h1>Products</h1>
-{{#if prods.length}}
+<div>
+    {{#if payload.length}}
         <table>
             <thead>
                 <tr>
@@ -11,10 +12,11 @@
                     <th>code</th>
                     <th>stock</th>
                     <th>category</th>
+                    <th>Add to Cart</th>
                 </tr>
             </thead>
             <tbody>
-                {{#each prods}}
+                {{#each payload}}
                     <tr>
                         <td>{{id}}</td>
                         <td>{{title}}</td>
@@ -24,10 +26,20 @@
                         <td>{{code}}</td>
                         <td>{{stock}}</td>
                         <td>{{category}}</td>
+                        <td><button onclick={addToCart("{{id}}")}>Add</button></td>
                     </tr>
                 {{/each}}
             </tbody>
         </table>
-{{else}}
-    <p>No products to show</p>
-{{/if}}
+    {{/if}}
+</div>
+<div>
+    {{#if hasPrevPage}}
+        <a href={{prevLink}}><button>Anterior</button></a>
+    {{/if}}
+    {{#if hasNextPage}}
+        <a href={{nextLink}}><button>Siguiente</button></a>
+    {{/if}}
+</div>
+
+<script src="/js/products.js"></script>

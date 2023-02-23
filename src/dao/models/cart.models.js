@@ -6,8 +6,9 @@ const cartCollection = "carts";
 const cartSchema = new mongoose.Schema({
     products: [
         {
-            id: {
-                type: String,
+            product: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'products',
                 required: true
             },
             quantity: {

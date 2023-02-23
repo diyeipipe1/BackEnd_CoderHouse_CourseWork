@@ -6,6 +6,7 @@ import productRouter from "./routes/products.routes.js";
 import cartRouter from "./routes/carts.routes.js";
 import viewsRouter from "./routes/views.routes.js";
 import ProductManager from "./dao/filemanagers/ProductManager.js";
+import ProductDBManager from "./dao/dbmanagers/ProductDBManager.js";
 import MessagesDBManager from "./dao/dbmanagers/MessagesDBManager.js";
 import mongoose from "mongoose";
 
@@ -41,6 +42,7 @@ const socketServer = new Server(httpServer);
 
 // Use a socket
 const productManager = new ProductManager(__dirname+"/public/data/products.json")
+const productDBManager = new ProductDBManager()
 const messagesDBManager = new MessagesDBManager()
 const viewNameSpace = socketServer.of("/realtimeproducts");
 const chatNameSpace = socketServer.of('/chat');
@@ -49,11 +51,11 @@ const chatNameSpace = socketServer.of('/chat');
 viewNameSpace.on("connection", socket => {
     socket.on("update", async _ => {
         // Turn init false so the prodManger autoUpdates
-        productManager.init= false;
+        //productManager.init= false;
         // get the products
-        let products = await productManager.getProducts();
+        let products = await productDBManager.getProducts(100,1,"","");
         // Go back to JavaScript with updated list
-        socket.emit("updateList", products) 
+        socket.emit("updateList", products.payload) 
     })
 })
 

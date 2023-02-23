@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------
 Get products
-curl --location --request GET 'localhost:8080/api/products/?limit=3'
+curl --location -g --request GET 'localhost:8080/api/products/?limit=3&sort=desc&query={"category":"Ropa"}'
 
 ----------------------------------------------------------------------------
 Get product
@@ -52,3 +52,36 @@ curl --location --request POST 'localhost:8080/api/carts'
 ----------------------------------------------------------------------------
 Post Product Cart
 curl --location --request POST 'localhost:8080/api/carts/1/product/4'
+
+----------------------------------------------------------------------------
+Update Products in Cart
+curl --location --request PUT 'localhost:8080/api/carts/63e8ea1666d66f3c2898093c' \
+--header 'Content-Type: application/json' \
+--data-raw '
+[
+{
+    "product": "63e49dda0bc2a55e29faf2d3e",
+    "quantity": 3
+},
+{
+    "product": "63e49dda0bc2a55e29faf2d3ee",
+    "quantity": 125
+}
+]
+'
+
+----------------------------------------------------------------------------
+Put Product Quantity Cart
+curl --location --request PUT 'localhost:8080/api/carts/63ef35b2042567c930b4d414/product/63e49dda0bc2a55e29faf2d3ee' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "quantity":300
+}'
+
+----------------------------------------------------------------------------
+Delete Products in Cart
+curl --location --request DELETE 'localhost:8080/api/carts/63ef35b2042567c930b4d414'
+
+----------------------------------------------------------------------------
+Delete Single Product in Cart
+curl --location --request DELETE 'localhost:8080/api/carts/63ef35b2042567c930b4d414/product/63e49dda0bc2a55e29faf2d3edel'

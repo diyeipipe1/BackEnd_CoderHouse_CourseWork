@@ -26,12 +26,48 @@ export default class ProductDBManager{
     }
 
     // Read
-    async getProducts() {
+    async getProducts(limit, page, sort, query) {
         try {
-            // find gets you all the documents in a collection, this case the collection in the product model
-            let products = await ProductModel.find();
+            // options to use in the paginate
+            let options = {
+                limit: limit,
+                page: page,
+                lean: true,
+            };
 
-            return products
+            // if there's a query, assume it works and assign, let db error handle
+            if (query) {
+                if (typeof query === 'string') {
+                    query = JSON.parse(query);
+                }
+                options.query = query;
+            }
+
+            // if there's a sort, assume it works and put it on options
+            if (sort) {
+                options.sort = {price: sort};
+            }
+
+            // find gets you the documents in a collection according to options sent
+            const result = await ProductModel.paginate({}, options);
+
+            // special thanks to my classmates for the next line
+            result.prevLink = `http://localhost:8080/products/?${"limit=" + limit}${"&page=" + (+page - 1)}${query? "&query=" + encodeURIComponent(JSON.stringify(query)) + "&" : ""}${sort ? "&sort=" + sort : ""}`
+            result.nextLink = `http://localhost:8080/products/?${"limit=" + limit}${"&page=" + (+page + 1)}${query? "&query=" + encodeURIComponent(JSON.stringify(query)) + "&" : ""}${sort ? "&sort=" + sort : ""}`
+
+            return {
+                status: "success",
+                payload: result.docs,
+                totalPages: result.totalPages,
+                prevPage: result.prevPage,
+                nextPage: result.nextPage,
+                page: result.page,
+                hasPrevPage: result.hasPrevPage,
+                hasNextPage: result.hasNextPage,
+                prevLink: result.hasPrevPage? result.prevLink: null,
+                nextLink: result.hasNextPage? result.nextLink: null,
+                totalDocs: result.totalDocs,
+            }
         } catch (error) {
             throw error;
         }

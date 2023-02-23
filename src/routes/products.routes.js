@@ -18,21 +18,16 @@ const productDBManager = new ProductDBManager()
 router.get("/", async(req, res) => {
     // Try catch in case the number conversion of limit returns an error
     try {
-        let limit = req.query.limit
+        let limit = req.query.limit || 10
+        let page = req.query.page || 1
+        let sort = req.query.sort 
+        let query = req.query.query 
 
         // get the products (one is FileSystem and the other is Mongoose)
         //let products = await productManager.getProducts();
-        let products = await productDBManager.getProducts();
+        let response = await productDBManager.getProducts(limit, page, sort, query);
 
-        // If a limit was sent by query, limit the products shown
-        if (limit){
-            limit = Number(limit)
-            products = products.slice(0, limit)
-            // Error handling if there was an error with the conversion and default value NaN triggered
-            if (!limit){ return res.status(400).send({status: "QueryError", error: "the query is expected to have a number"}) } 
-        }
-
-        res.send(products)
+        res.send(response)
     } catch (error) {
         // Error handling if the productManager sends an error
         return res.status(500).send({status: "InternalServerError", error: error.message}) 
