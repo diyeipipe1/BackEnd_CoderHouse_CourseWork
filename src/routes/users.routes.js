@@ -53,8 +53,7 @@ router.post('/login', async(req, res) => {
         if (userLog.email && userLog.password){
             // login user
             const user = await userDBManager.loginUser(userLog.email, userLog.password)
-            console.log("dwewef")
-            console.log(user)
+
             // If we get something falsy then the user wasn't created correctly
             if (!user){
                 return res.status(400).send({status: "NotLoggedError", error: "email or password invalid"})
@@ -62,6 +61,7 @@ router.post('/login', async(req, res) => {
 
             req.session.user = {
                 id: user._id,
+                name: user.first_name,
                 email:user.email
             }
 

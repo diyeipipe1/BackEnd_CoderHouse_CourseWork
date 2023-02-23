@@ -18,8 +18,8 @@ const cartDBManager = new CartDBManager()
 
 // Login - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 router.get("/", (req, res) => {
+    req.session.destroy() // TODO: Check if necessary
     res.render("login")
-    // TODO: AFTER HAND ON LAB CHECK FOR REROUTING OF MI
 })
 
 router.get("/register", (req, res) => {
@@ -48,6 +48,13 @@ router.get("/all", async(req, res) => {
 // Get paginated products and add them to a cart
 router.get("/products", async (req, res) => {
     try {
+        let name = "default" // TODO: por ahora no se bloquea ruta sino se usa defaults
+        let email = "defaultEmail"
+        if (req.session.user){
+            name = req.session.user.name
+            email = req.session.user.email
+        }
+
         let limit = req.query.limit || 10
         let page = req.query.page || 1
         let sort = req.query.sort 
@@ -64,7 +71,9 @@ router.get("/products", async (req, res) => {
           hasPrevPage,
           nextLink,
           prevLink,
-          pageNum
+          pageNum, 
+          name,
+          email
         });
     } catch (err) {
         // Error handling if the productManager sends an error

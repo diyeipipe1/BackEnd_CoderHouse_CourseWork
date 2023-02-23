@@ -13,5 +13,10 @@ form.addEventListener('submit',evt=>{
             'Content-type': 'application/json'
         }
     }).then(result=>result.json())
-    .then(json=>console.log(json));
+    .then(json=>{
+        console.log(json)
+        if (json.status == "success"){
+            window.location.href= "/products";
+        }
+    });
 })
