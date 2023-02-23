@@ -47,5 +47,33 @@ router.post('/register', async(req, res) => {
 })
 
 router.post('/login', async(req, res) => {
-    //TODO
+    try {
+        let userLog = req.body
+
+        // Error checking, see if there's missing data
+        if (userLog.email && userLog.password){
+            // login user
+            const user = await userDBManager.loginUser(userLog.email && userLog.password)
+    
+            // If we get something falsy then the user wasn't created correctly
+            if (!user){
+                return res.status(400).send({status: "NotLoggedError", error: "email or password invalid"})
+            }
+
+            req.session.user = {
+                id: user._id,
+                email:user.email
+            }
+
+            res.send({status:"success", message: "Successful login"})
+        }else{
+            return res.status(400).send({status: "BadRequest", error:"missing field or fields in request body"})
+        }
+    } catch (err) {
+        // Error handling if the userDBManager sends an error
+        return res.status(400).send({status:"BadRequest", error: err.message})
+    }
 })
+
+// export the router
+export default router;

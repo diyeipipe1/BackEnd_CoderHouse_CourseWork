@@ -16,8 +16,21 @@ const productManager = new ProductManager(__dirname+"/public/data/products.json"
 const productDBManager = new ProductDBManager()
 const cartDBManager = new CartDBManager()
 
+// Login - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+router.get("/", (req, res) => {
+    res.render("login")
+    // TODO: AFTER HAND ON LAB CHECK FOR REROUTING OF MI
+})
+
+router.get("/register", (req, res) => {
+    res.render("register")
+})
+
+
+// Products - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 // Get all products
-router.get("/", async(req, res) => {
+router.get("/all", async(req, res) => {
     // Try catch in case the number conversion of limit returns an error
     try {
         // get the products
