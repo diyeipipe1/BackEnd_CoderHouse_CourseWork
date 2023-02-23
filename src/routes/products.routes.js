@@ -45,7 +45,7 @@ router.get("/:pid", async(req, res) => {
 
         // If we get null then the product with given id wasn't found
         if (!product){
-            res.status(404).send({status: "NotFoundError", error: "product with param id not found"})
+            return res.status(404).send({status: "NotFoundError", error: "product with param id not found"})
         }
 
         res.send(product)
@@ -72,7 +72,7 @@ router.post("/", async(req, res) => {
     
             // If we get something falsy then the product wasn't created correctly
             if (!product){
-                res.status(400).send({status: "NotCreatedError", error: "there was an error creating the product"})
+                return res.status(400).send({status: "NotCreatedError", error: "there was an error creating the product"})
             }
 
             res.send(product)
@@ -98,7 +98,7 @@ router.put("/:pid", async(req, res) => {
 
         // If we get something falsy then the product wasn't updated correctly
         if (!prod){
-            res.status(400).send({status: "NotUpdatedError", error: "there was an error updating the product"})
+            return res.status(400).send({status: "NotUpdatedError", error: "there was an error updating the product"})
         }
 
         res.send(prod)
@@ -119,7 +119,7 @@ router.delete("/:pid", async(req, res) => {
 
         // If we get something falsy then the product wasn't deleted correctly
         if (!verif){
-            res.status(400).send({status: "NotUpdatedError", error: "there was an error deleting the product"})
+            return res.status(400).send({status: "NotUpdatedError", error: "there was an error deleting the product"})
         }
 
         res.status(200).send({status:"Ok", error: "product deleted correctly"})
