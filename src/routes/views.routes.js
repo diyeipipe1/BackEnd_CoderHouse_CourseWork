@@ -72,8 +72,7 @@ router.get("/carts/:cid", async(req, res) => {
             return res.status(404).send({status: "NotFoundError", error: "cart with param id not found"})
         }
 
-        res.send(prods)
-        //res.render("cart", prods)
+        res.render("cart", {prods})
 
     } catch (err) {
         // Error handling if the cartManager sends an error

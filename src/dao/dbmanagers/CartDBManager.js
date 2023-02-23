@@ -17,7 +17,7 @@ export default class CartDBManager{
     // Read
     async getCartByIdPopulate(id){
         try {
-            let cart = await CartModel.findById(id).populate('products.product');
+            let cart = await CartModel.findById(id).populate('products.product').lean({});
 
             if (cart) {
                 return cart.products
