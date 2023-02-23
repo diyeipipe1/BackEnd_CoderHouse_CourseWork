@@ -22,7 +22,7 @@ export default class UserDBManager{
     // login
     async checkUser(email){
         try {
-            let user = await UserModel.findById(email);
+            let user = await UserModel.findOne(email);
             if (user) {
                 console.log("user with email found")
                 return true
@@ -41,7 +41,7 @@ export default class UserDBManager{
     // login
     async loginUser(email, password){
         try {
-            let user = await UserModel.findById({email, password});
+            let user = await UserModel.findOne({email, password});
             if (user) {
                 return user
             }

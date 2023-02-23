@@ -21,15 +21,14 @@ router.post('/register', async(req, res) => {
             userNew.age && userNew.password){
 
             // Check for user existence
-            const exists = await userDBManager.checkUser(email)
+            const exists = await userDBManager.checkUser(userNew.email)
             if (exists) {
                 return res.status(400).send({status: "UserExistsError", error: "user email already registered"})
             }
 
-
             // Create user
-            const user = await userDBManager.registerUser(userNew.first_name && userNew.last_name && userNew.email && 
-                userNew.age && userNew.password)
+            const user = await userDBManager.registerUser(userNew.first_name, userNew.last_name, userNew.email, 
+                userNew.age, userNew.password)
     
             // If we get something falsy then the user wasn't created correctly
             if (!user){
@@ -53,8 +52,9 @@ router.post('/login', async(req, res) => {
         // Error checking, see if there's missing data
         if (userLog.email && userLog.password){
             // login user
-            const user = await userDBManager.loginUser(userLog.email && userLog.password)
-    
+            const user = await userDBManager.loginUser(userLog.email, userLog.password)
+            console.log("dwewef")
+            console.log(user)
             // If we get something falsy then the user wasn't created correctly
             if (!user){
                 return res.status(400).send({status: "NotLoggedError", error: "email or password invalid"})
