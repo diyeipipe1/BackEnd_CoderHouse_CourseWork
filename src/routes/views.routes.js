@@ -51,10 +51,10 @@ router.get("/products", async (req, res) => {
         let name = "default" // TODO: por ahora no se bloquea ruta sino se usa defaults
         let email = "defaultEmail"
         let role = "defaultRole"
-        if (req.session.user){
-            name = req.session.user.name
-            email = req.session.user.email
-            role = req.session.user.role
+        if (req.user){
+            name = req.user.name
+            email = req.user.email
+            role = req.user.role
         }
 
         let limit = req.query.limit || 10

@@ -41,18 +41,16 @@ router.post('/login',
                     throw new Error(req.user.errorMess)
                 }
 
-                console.log(req.session)
+                // TODO: Check
+                //req.session.user = {
+                //    id: user._id,
+                //    name: user.first_name,
+                //    email:user.email,
+                //    role: user.role
+                //}
 
-                req.session.user = {
-                    id: user._id,
-                    name: user.first_name,
-                    email:user.email,
-                    role: user.role
-                }
 
-                console.log(req.session)
-
-                res.send({status: "success", payload: req.session.user})
+                res.send({status: "success", payload: req.user})
             } catch (err) {
                 // Error handling if the userDBManager sends an error
                 return res.status(400).send({status:"BadRequest", error: err.message})
