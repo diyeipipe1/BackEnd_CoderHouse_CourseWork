@@ -12,6 +12,8 @@ import ProductDBManager from "./dao/dbmanagers/ProductDBManager.js";
 import MessagesDBManager from "./dao/dbmanagers/MessagesDBManager.js";
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
+import passport from "passport";
+import initPassport from "./config/passport.config.js";  
 
 // Bring the module
 const app = express();
@@ -36,6 +38,12 @@ app.use(session({
     resave:false,
     saveUninitialized:false
 }))
+
+// Passport
+initPassport();
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Handlebars
 app.engine('handlebars', handlebars.engine());

@@ -56,4 +56,42 @@ export default class UserDBManager{
             }
         }
     } 
+
+    // Get
+    async getUserByEmail(email){
+        try {
+            let user = await UserModel.findOne({email});
+            if (user) {
+                return user
+            }
+
+            console.log("email invalid")
+            return null
+        } catch (error) {
+            if ((error.message).indexOf("Cast to ObjectId failed for value") !== -1){
+                return null
+            }else{
+                throw error
+            }
+        }
+    }
+
+    // Read user
+    async getUserById(id){
+        try {
+            let user = await UserModel.findById(id);
+            if (user) {
+                return user
+            }
+
+            console.log("no users with given ID")
+            return null
+        } catch (error) {
+            if ((error.message).indexOf("Cast to ObjectId failed for value") !== -1){
+                return null
+            }else{
+                throw error
+            }
+        }
+    } 
 }
