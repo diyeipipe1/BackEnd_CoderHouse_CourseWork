@@ -42,8 +42,8 @@ app.use(session({
 // Passport
 initPassport();
 
-app.use(passport.initialize());
 app.use(passport.session());
+app.use(passport.initialize());
 
 // Handlebars
 app.engine('handlebars', handlebars.engine());

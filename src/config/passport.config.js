@@ -2,6 +2,7 @@ import passport from "passport";
 import local from "passport-local";
 import UserDBManager from "../dao/dbmanagers/UserDBManager.js";
 import {createHash, isValidPassword} from "../utils.js"
+import githubService from 'passport-github2';
 
 // activate the user manager
 const userDBManager = new UserDBManager()
@@ -68,6 +69,41 @@ const initPassport = () => {
             }
         }
     ));
+
+    passport.use('github', 
+    new githubService({
+        clientID: 'Iv1.0c3c778011be3bb0',
+        clientSecret: 'bbfa0a2c492968a47cd6bb2090a36ddab13b5795',
+        callbackURL: 'http://localhost:8080/api/session/githubcalls'
+    }, async (accessToken,refreshToken,profile, done)=> {
+        try{
+            let user = await userDBManager.getUserByEmail(profile._json.email)
+            if(!user){
+                let userNew = {
+                    first_name: profile._json.name || "no_name",
+                    last_name: profile._json.last_name || "no_last_name",
+                    age: 18,
+                    email: profile._json.email,
+                    password:''
+                }
+
+                // Create user
+                const userCreat = await userDBManager.registerUser(userNew.first_name, userNew.last_name, userNew.email, 
+                    userNew.age, createHash(userNew.password))
+
+                // If we get something falsy then the user wasn't created correctly
+                if (!userCreat){
+                    return done(null, {_id:0, errorMess:"there was an error registering the user"})
+                }
+
+                done(null,userCreat)
+            }else{
+                done(null,user)
+            }
+        }catch(error){
+            return done (null, {_id:0, errorMess:error.message})
+        }
+    }))
 
     // Return here to serialize (Cookies and inique identifier)
     passport.serializeUser((user, done) => {

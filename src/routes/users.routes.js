@@ -40,7 +40,6 @@ router.post('/login',
                     //TODO: Catch passport error
                     throw new Error(req.user.errorMess)
                 }
-
                 // TODO: Check
                 //req.session.user = {
                 //    id: user._id,
@@ -68,6 +67,19 @@ router.get("/logout", async (req, res) => {
         return res.status(400).send({status:"BadRequest", error: err.message})
     }
 })
+
+router.get('/github',
+    passport.authenticate('github',{scope:['user:email']},async(req,res)=>{})
+)
+
+router.get('/githubcalls',
+    passport.authenticate('github', {failureRedirect:'/register'}),
+    async(req,res)=>{
+        req.session.user =req.user,
+        console.log(req.user)
+        res.redirect('../../products');
+})
+
 
 // export the router
 export default router;
