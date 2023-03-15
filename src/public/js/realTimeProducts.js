@@ -19,7 +19,6 @@ deleteForm.addEventListener("submit", event => {
 
 
 socket.on("updateList", data => {
-    // TODO: Llega aún todos los prods?
     console.log(data)
     table.innerHTML = "";
     for(let product of data) {

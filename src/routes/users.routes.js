@@ -40,14 +40,9 @@ router.post('/login',
                     //TODO: Catch passport error
                     throw new Error(req.user.errorMess)
                 }
-                // TODO: Check
-                //req.session.user = {
-                //    id: user._id,
-                //    name: user.first_name,
-                //    email:user.email,
-                //    role: user.role
-                //}
 
+                // Add to session
+                req.session.user = req.user
 
                 res.send({status: "success", payload: req.user})
             } catch (err) {
