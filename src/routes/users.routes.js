@@ -54,10 +54,10 @@ router.post('/login',
 
 router.get("/logout", async (req, res) => {
     try {
-        req.session.destroy();
-        req.user.destroy();
+        if (req.session) req.session.destroy();
+        if (req.user) req.user = {}
         console.log("Logout well done")
-        res.send("logout success!");
+        res.send("logout success!"); 
     } catch (err) {
         return res.status(400).send({status:"BadRequest", error: err.message})
     }

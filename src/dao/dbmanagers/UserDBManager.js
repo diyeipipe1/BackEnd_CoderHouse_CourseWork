@@ -2,14 +2,15 @@ import {UserModel} from "../models/user.models.js";
 
 export default class UserDBManager{
     // Register
-    async registerUser(first_name, last_name, email, age, password){
+    async registerUser(first_name, last_name, email, age, password, cid){
         try {
             let user = UserModel.create({
                 first_name, 
                 last_name, 
                 email, 
                 age, 
-                password
+                password,
+                cart: cid 
             })
 
             // Return user registered

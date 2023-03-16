@@ -14,7 +14,7 @@ form.addEventListener('submit',evt=>{
         }
     }).then(result=>result.json())
     .then(json=>{
-        console.log(json)
+        //console.log(json)
         if (json.status == "success"){
             window.location.href= "/products";
         }

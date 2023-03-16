@@ -1,11 +1,13 @@
 import passport from "passport";
 import local from "passport-local";
 import UserDBManager from "../dao/dbmanagers/UserDBManager.js";
+import CartDBManager from "../dao/dbmanagers/CartDBManager.js";
 import {createHash, isValidPassword} from "../utils.js"
 import githubService from 'passport-github2';
 
 // activate the user manager
 const userDBManager = new UserDBManager()
+const cartDBManager = new CartDBManager()
 
 
 const localStrategy = local.Strategy;
@@ -23,13 +25,16 @@ const initPassport = () => {
                     if (exists) {
                         return done(null, {_id:0, errorMess:"user email already registered"})
                     }
+
+                    // Create cart
+                    const cart = await cartDBManager.addCart()
     
                     // Create user
                     const user = await userDBManager.registerUser(userNew.first_name, userNew.last_name, userNew.email, 
-                        userNew.age, createHash(userNew.password))
+                        userNew.age, createHash(userNew.password), cart.id)
     
                     // If we get something falsy then the user wasn't created correctly
-                    if (!user){
+                    if (!user || !cart){
                         return done(null, {_id:0, errorMess:"there was an error registering the user"})
                     }
     
@@ -87,9 +92,12 @@ const initPassport = () => {
                     password:''
                 }
 
+                // Create cart
+                const cart = await cartDBManager.addCart()
+
                 // Create user
                 const userCreat = await userDBManager.registerUser(userNew.first_name, userNew.last_name, userNew.email, 
-                    userNew.age, createHash(userNew.password))
+                    userNew.age, createHash(userNew.password), cart.id)
 
                 // If we get something falsy then the user wasn't created correctly
                 if (!userCreat){

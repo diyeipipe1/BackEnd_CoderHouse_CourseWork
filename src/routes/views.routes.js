@@ -48,7 +48,7 @@ router.get("/all", async(req, res) => {
 // Get paginated products and add them to a cart
 router.get("/products", async (req, res) => {
     try {
-        console.log(req.session)
+        
         // Defaults in case they don't arrive with github
         let name = "default"
         let email = "defaultEmail"
