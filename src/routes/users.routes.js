@@ -75,6 +75,18 @@ router.get('/githubcalls',
         res.redirect('../../products');
 })
 
+router.get('/current', (req, res) => {
+    try {
+        if (req.session.user){ 
+            return res.send({status:"Ok", payload: req.session.user})
+        }
+        res.send({status:"BadRequest", error: "No logged used"})
+
+    } catch (err) {
+        return res.status(400).send({status:"BadRequest", error: err.message})
+    }
+})
+
 
 // export the router
 export default router;
