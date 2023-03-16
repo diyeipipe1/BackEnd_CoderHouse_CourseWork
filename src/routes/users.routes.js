@@ -80,7 +80,7 @@ router.get('/current', (req, res) => {
         if (req.session.user){ 
             return res.send({status:"Ok", payload: req.session.user})
         }
-        res.send({status:"BadRequest", error: "No logged used"})
+        res.status(400).send({status:"BadRequest", error: "No logged used"})
 
     } catch (err) {
         return res.status(400).send({status:"BadRequest", error: err.message})
