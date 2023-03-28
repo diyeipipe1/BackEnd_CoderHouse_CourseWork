@@ -2,7 +2,7 @@ import express from "express";
 import session from "express-session";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
-import __dirname from './utils.js'
+import __dirname,{MongoConnection, Port, SessionSecret} from './utils.js';
 import productRouter from "./routes/products.routes.js";
 import cartRouter from "./routes/carts.routes.js";
 import userRouter from "./routes/users.routes.js";
@@ -13,14 +13,14 @@ import MessagesDBManager from "./dao/dbmanagers/MessagesDBManager.js";
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
 import passport from "passport";
-import initPassport from "./config/passport.config.js";  
+import initPassport from "./config/passport.config.js"; 
 
 // Bring the module
 const app = express();
 app.use(express.json()); // Important to work with JSON
 
 // Connect to mongoDB
-mongoose.connect('mongodb+srv://diyeipipe:coderhouse123@coderhousecluster.hh51n5a.mongodb.net/?retryWrites=true&w=majority', (error) => {
+mongoose.connect(MongoConnection, (error) => {
     if (error){
         console.log(error)
         process.exit();
@@ -30,11 +30,11 @@ mongoose.connect('mongodb+srv://diyeipipe:coderhouse123@coderhousecluster.hh51n5
 // Use sessions
 app.use(session({
     store:MongoStore.create({
-        mongoUrl:'mongodb+srv://diyeipipe:coderhouse123@coderhousecluster.hh51n5a.mongodb.net/?retryWrites=true&w=majority',
+        mongoUrl:MongoConnection,
         mongoOptions:{useNewUrlParser:true,useUnifiedTopology:true},
         ttl:20
     }),
-    secret:"secretIsUp",
+    secret:SessionSecret,
     resave:false,
     saveUninitialized:false
 }))
@@ -61,7 +61,7 @@ app.use('/api/session',userRouter);
 app.use('/', viewsRouter)
 
 // Raise the server
-const httpServer = app.listen(8080, () => {console.log("Server raised")});
+const httpServer = app.listen(parseInt(Port), () => {console.log("Server raised")});
 const socketServer = new Server(httpServer);
 
 // Use a socket

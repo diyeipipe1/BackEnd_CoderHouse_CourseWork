@@ -2,7 +2,7 @@ import passport from "passport";
 import local from "passport-local";
 import UserDBManager from "../dao/dbmanagers/UserDBManager.js";
 import CartDBManager from "../dao/dbmanagers/CartDBManager.js";
-import {createHash, isValidPassword} from "../utils.js"
+import {createHash, isValidPassword, ClientSecret} from "../utils.js"
 import githubService from 'passport-github2';
 
 // activate the user manager
@@ -78,7 +78,7 @@ const initPassport = () => {
     passport.use('github', 
     new githubService({
         clientID: 'Iv1.0c3c778011be3bb0',
-        clientSecret: 'bbfa0a2c492968a47cd6bb2090a36ddab13b5795',
+        clientSecret: ClientSecret,
         callbackURL: 'http://localhost:8080/api/session/githubcalls'
     }, async (accessToken,refreshToken,profile, done)=> {
         try{
