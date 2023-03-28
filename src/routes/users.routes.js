@@ -1,6 +1,5 @@
 import express from "express";
-import UserDBManager from "../dao/dbmanagers/UserDBManager.js";
-import passport from "passport";
+import UsersController from "../controllers/users.controller.js";
 
 // Bring the module
 const router = express.Router();
@@ -9,83 +8,26 @@ const router = express.Router();
 router.use(express.json())
 router.use(express.urlencoded({extended: true}))
 
-// activate the user manager
-const userDBManager = new UserDBManager()
+// activate controller
+const usersController = new UsersController()
 
-router.post('/register', 
-    passport.authenticate(
-        'register', 
-        {session: true}),
-        async(req, res) => {
-            try {
-                if (req.user.errorMess) {
-                    //TODO: Catch passport error
-                    throw new Error(req.user.errorMess)
-                }
-                res.send({status: "success", payload: req.user})
-            } catch (err) {
-                // Error handling if the userDBManager sends an error
-                return res.status(400).send({status:"BadRequest", error: err.message})
-            }
-        }
-)
+// Use passport to register user
+router.post('/register', usersController.passportAuthRegister, usersController.authRegister)
 
-router.post('/login', 
-    passport.authenticate(
-        'login', 
-        {session: true}),
-        async(req, res) => {
-            try {
-                if (req.user.errorMess) {
-                    //TODO: Catch passport error
-                    throw new Error(req.user.errorMess)
-                }
+// Log in user
+router.post('/login', usersController.passportAuthLogin, usersController.authLogin)
 
-                // Add to session
-                req.session.user = req.user
+// Logout page
+router.get("/logout", usersController.authLogout)
 
-                res.send({status: "success", payload: req.user})
-            } catch (err) {
-                // Error handling if the userDBManager sends an error
-                return res.status(400).send({status:"BadRequest", error: err.message})
-            }
-        }
-)
+// Activates github verification with third party
+router.get('/github', usersController.passportGitHub)
 
-router.get("/logout", async (req, res) => {
-    try {
-        if (req.session) req.session.destroy();
-        if (req.user) req.user = {}
-        console.log("Logout well done")
-        res.send("logout success!"); 
-    } catch (err) {
-        return res.status(400).send({status:"BadRequest", error: err.message})
-    }
-})
+// After github login, this is the route that user is redirected to
+router.get('/githubcalls', usersController.passportGitHubCallback, usersController.authGitHubCallback)
 
-router.get('/github',
-    passport.authenticate('github',{scope:['user:email']},async(req,res)=>{})
-)
-
-router.get('/githubcalls',
-    passport.authenticate('github', {failureRedirect:'/register'}),
-    async(req,res)=>{
-        req.session.user =req.user,
-        console.log(req.user)
-        res.redirect('../../products');
-})
-
-router.get('/current', (req, res) => {
-    try {
-        if (req.session.user){ 
-            return res.send({status:"Ok", payload: req.session.user})
-        }
-        res.status(400).send({status:"BadRequest", error: "No logged used"})
-
-    } catch (err) {
-        return res.status(400).send({status:"BadRequest", error: err.message})
-    }
-})
+// Show current user
+router.get('/current', usersController.authCurrent)
 
 
 // export the router

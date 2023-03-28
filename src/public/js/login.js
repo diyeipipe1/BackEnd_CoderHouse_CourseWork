@@ -19,4 +19,5 @@ form.addEventListener('submit',evt=>{
             window.location.href= "/products";
         }
     });
+    //TODO: Error handling empty fields
 })
