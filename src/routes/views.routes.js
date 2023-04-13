@@ -1,6 +1,7 @@
 import express from "express";
 import __dirname from '../utils.js'
 import ViewsController from "../controllers/views.controller.js";
+import {HandlePolicies} from "../utils.js"
 
 // Bring the module
 const router = express.Router();
@@ -36,7 +37,8 @@ router.get("/carts/:cid", viewsController.getProductsCart)
 router.get("/realtimeproducts", viewsController.realTimeProducts)
 
 // Chat application
-router.get("/chat", viewsController.chat)
+// TODO: Add GoToChat button on /products
+router.get("/chat",  HandlePolicies(['USER']), viewsController.chat)
 
 
 

@@ -1,7 +1,4 @@
-import CartDBManager from "../dao/dbmanagers/CartDBManager.js";
-
-// activate the cart manager
-const cartDBManager = new CartDBManager()
+import {CartService} from "../repositories/index.repositories.js"
 
 // Create class for exporting Callback functions
 export default class CartController{
@@ -9,7 +6,7 @@ export default class CartController{
         try {
             // Create cart
             //const cart = await cartManager.addCart()
-            const cart = await cartDBManager.addCart()
+            const cart = await CartService.addCart()
     
             // If we get something falsy then the cart wasn't created correctly
             if (!cart){
@@ -29,7 +26,7 @@ export default class CartController{
     
             // get the wanted cart products
             //let products = await cartManager.getCartById(cid);
-            let products = await cartDBManager.getCartByIdPopulate(cid);
+            let products = await CartService.getCartByIdPopulate(cid);
     
             // If we get null then the cart with given id wasn't found
             if (!products){
@@ -51,7 +48,7 @@ export default class CartController{
             
             // Try to add quantity to the product with the class function
             //const verif = await cartManager.addProductForCart(cid, pid)
-            const verif = await cartDBManager.addProductForCart(cid, pid)
+            const verif = await CartService.addProductForCart(cid, pid)
     
             // If we get something falsy then the product wasn't deleted correctly
             if (!verif){
@@ -70,7 +67,7 @@ export default class CartController{
             let prodsNew = req.body
     
             // Try to elim product with the class function
-            const prodsUpdated = await cartDBManager.updateCart(cid, prodsNew)
+            const prodsUpdated = await CartService.updateCart(cid, prodsNew)
     
             if (!prodsUpdated){
                 return res.status(400).send({status: "NotUpdatedError", error: "there was an error updating the product"})
@@ -89,7 +86,7 @@ export default class CartController{
             let quantity = req.body.quantity
     
             // Try to elim product with the class function
-            const prodUpdated = await cartDBManager.updateCartProduct(cid, pid, quantity)
+            const prodUpdated = await CartService.updateCartProduct(cid, pid, quantity)
     
             if (!prodUpdated){
                 return res.status(400).send({status: "NotUpdatedError", error: "there was an error updating the product"})
@@ -106,7 +103,7 @@ export default class CartController{
             let cid = req.params.cid
     
             // Try to elim product with the class function
-            const cartUpdated = await cartDBManager.deleteCart(cid)
+            const cartUpdated = await CartService.deleteCart(cid)
     
             if (!cartUpdated){
                 return res.status(400).send({status: "NotDeletedError", error: "there was an error deleting the products in the cart"})
@@ -124,7 +121,7 @@ export default class CartController{
             let cid = req.params.cid
         
             // Try to elim product with the class function
-            const verif = await cartDBManager.deleteProductForCart(cid, pid)
+            const verif = await CartService.deleteProductForCart(cid, pid)
     
             if (!verif){
                 return res.status(400).send({status: "NotDeletedError", error: "there was an error deleting the product"})
@@ -133,6 +130,29 @@ export default class CartController{
             res.status(200).send({status:"Ok", error: "product deleted correctly"})
         } catch (err) {
             return res.status(404).send({status:"CartNotFoundError", error: err.message})
+        }
+    }
+
+    purchaseProduct = async(req, res) => {
+        try {
+            prodsCart = await this.getAllProducts(req, res) //TODO: THIS OR HTML REQUEST?
+    
+            if (!prodsCart.error) {
+                //
+            }else {
+                return res.status(400).send({status:"Error", error: prodsCart.error})
+            }
+            
+            // Use the getAllProductsto get list.. Qnty and stock
+            // If
+            //  Qnty>=Stock, restar del stock y continuar 
+            //  Qnty<Stock No agregar el producto a compras, nada de compras parciales
+            // Ticket create, before any actual update in case of code fail or catch that 
+            // Carrito borrar prods comprados ok
+            // Lista devuelta con prods no comprados
+        } catch (err) {
+            return res.status(404).send({status:"Error", error: err.message})
+
         }
     }
 }

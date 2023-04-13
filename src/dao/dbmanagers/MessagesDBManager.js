@@ -4,7 +4,7 @@ export default class MessagesDBManager{
     // Read
     async getMessages(){
         try {
-            // find gets you all the documents in a collection, this case the collection in the product model
+            // find gets you all the documents in a collection, this case the collection in the messages model
             let messages = await MessagesModel.find();
 
             return messages

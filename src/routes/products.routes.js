@@ -1,6 +1,7 @@
 import express from "express";
 import __dirname from '../utils.js'
 import ProductController from "../controllers/products.controller.js";
+import {HandlePolicies} from "../utils.js"
 
 // Bring the module
 const router = express.Router();
@@ -19,13 +20,13 @@ router.get("/", productController.getProducts)
 router.get("/:pid", productController.getProductById)
 
 // Post product
-router.post("/", productController.createProduct)
+router.post("/", HandlePolicies(['ADMIN']), productController.createProduct)
 
 // Put product
-router.put("/:pid", productController.updateProduct)
+router.put("/:pid", HandlePolicies(['ADMIN']), productController.updateProduct)
 
 // Delete product
-router.delete("/:pid", productController.deleteProduct)
+router.delete("/:pid", HandlePolicies(['ADMIN']), productController.deleteProduct)
 
 
 // export the router

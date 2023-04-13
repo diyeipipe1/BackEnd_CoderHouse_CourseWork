@@ -1,13 +1,8 @@
 import passport from "passport";
 import local from "passport-local";
-import UserDBManager from "../dao/dbmanagers/UserDBManager.js";
-import CartDBManager from "../dao/dbmanagers/CartDBManager.js";
+import {UserService, CartService} from "../repositories/index.repositories.js"
 import {createHash, isValidPassword, ClientSecret} from "../utils.js"
 import githubService from 'passport-github2';
-
-// activate the user manager
-const userDBManager = new UserDBManager()
-const cartDBManager = new CartDBManager()
 
 
 const localStrategy = local.Strategy;
@@ -21,16 +16,16 @@ const initPassport = () => {
                     userNew.age && userNew.password){
                     
                     // Check for user existence
-                    const exists = await userDBManager.checkUser(userNew.email)
+                    const exists = await UserService.checkUser(userNew.email)
                     if (exists) {
                         return done(null, {_id:0, errorMess:"user email already registered"})
                     }
 
                     // Create cart
-                    const cart = await cartDBManager.addCart()
+                    const cart = await CartService.addCart()
     
                     // Create user
-                    const user = await userDBManager.registerUser(userNew.first_name, userNew.last_name, userNew.email, 
+                    const user = await UserService.registerUser(userNew.first_name, userNew.last_name, userNew.email, 
                         userNew.age, createHash(userNew.password), cart.id)
     
                     // If we get something falsy then the user wasn't created correctly
@@ -57,7 +52,7 @@ const initPassport = () => {
                 // Error checking, see if there's missing data
                 if (userLog.email && userLog.password){
                     // login user
-                    const user = await userDBManager.getUserByEmail(userLog.email)
+                    const user = await UserService.getUserByEmail(userLog.email)
         
                     // If we get something falsy then the user wasn't created correctly
                     if (!isValidPassword(user, userLog.password)){
@@ -82,7 +77,7 @@ const initPassport = () => {
         callbackURL: 'http://localhost:8080/api/session/githubcalls'
     }, async (accessToken,refreshToken,profile, done)=> {
         try{
-            let user = await userDBManager.getUserByEmail(profile._json.email)
+            let user = await UserService.getUserByEmail(profile._json.email)
             if(!user){
                 let userNew = {
                     first_name: profile._json.name || "no_name",
@@ -93,10 +88,10 @@ const initPassport = () => {
                 }
 
                 // Create cart
-                const cart = await cartDBManager.addCart()
+                const cart = await CartService.addCart()
 
                 // Create user
-                const userCreat = await userDBManager.registerUser(userNew.first_name, userNew.last_name, userNew.email, 
+                const userCreat = await UserService.registerUser(userNew.first_name, userNew.last_name, userNew.email, 
                     userNew.age, createHash(userNew.password), cart.id)
 
                 // If we get something falsy then the user wasn't created correctly
@@ -118,7 +113,7 @@ const initPassport = () => {
         done(null, user._id);
     })
     passport.deserializeUser(async(id, done) => {
-        let user = await userDBManager.getUserById(id)
+        let user = await UserService.getUserById(id)
         done(null, user);
     })
 }

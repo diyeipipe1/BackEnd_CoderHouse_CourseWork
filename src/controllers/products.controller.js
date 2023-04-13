@@ -1,7 +1,4 @@
-import ProductDBManager from "../dao/dbmanagers/ProductDBManager.js";
-
-// activate the product manager
-const productDBManager = new ProductDBManager()
+import {ProductService} from "../repositories/index.repositories.js";
 
 // Create class for exporting Callback functions
 export default class ProductController{
@@ -15,7 +12,7 @@ export default class ProductController{
     
             // get the products (one is FileSystem and the other is Mongoose)
             //let products = await productManager.getProducts();
-            let response = await productDBManager.getProducts(limit, page, sort, query);
+            let response = await ProductService.getProducts(limit, page, sort, query);
     
             res.send(response)
         } catch (error) {
@@ -30,7 +27,7 @@ export default class ProductController{
     
             // Get the product
             //const product = await productManager.getProductById(pid)
-            const product = await productDBManager.getProductById(pid)
+            const product = await ProductService.getProductById(pid)
     
             // If we get null then the product with given id wasn't found
             if (!product){
@@ -55,7 +52,7 @@ export default class ProductController{
                 // Create product
                 //const product = await productManager.addProduct(prodNew.title, prodNew.description, prodNew.price,
                 //    prodNew.thumbnail, prodNew.code, prodNew.stock, prodNew.category, prodNew.status)
-                const product = await productDBManager.addProduct(prodNew.title, prodNew.description, prodNew.price,
+                const product = await ProductService.addProduct(prodNew.title, prodNew.description, prodNew.price,
                     prodNew.thumbnail, prodNew.code, prodNew.stock, prodNew.category, prodNew.status)
         
                 // If we get something falsy then the product wasn't created correctly
@@ -80,7 +77,7 @@ export default class ProductController{
     
             // Try to update the product with the class function
             //const prod = await productManager.updateProduct(pid, prodNew)
-            const prod = await productDBManager.updateProduct(pid, prodNew)
+            const prod = await ProductService.updateProduct(pid, prodNew)
     
     
             // If we get something falsy then the product wasn't updated correctly
@@ -101,7 +98,7 @@ export default class ProductController{
         
             // Try to delete the product with the class function
             //const verif = await productManager.deleteProduct(pid)
-            const verif = await productDBManager.deleteProduct(pid)
+            const verif = await ProductService.deleteProduct(pid)
     
             // If we get something falsy then the product wasn't deleted correctly
             if (!verif){

@@ -1,9 +1,4 @@
-import ProductDBManager from "../dao/dbmanagers/ProductDBManager.js";
-import CartDBManager from "../dao/dbmanagers/CartDBManager.js";
-
-// activate the product manager
-const productDBManager = new ProductDBManager()
-const cartDBManager = new CartDBManager()
+import {CartService, ProductService} from "../repositories/index.repositories.js"
 
 // Create class for exporting Callback functions
 export default class ViewsController{
@@ -20,7 +15,7 @@ export default class ViewsController{
         // Try catch in case the number conversion of limit returns an error
         try {
             // get the products
-            let products = await productDBManager.getProducts(10,1,"","");
+            let products = await ProductService.getProducts(10,1,"","");
     
             let prods = products.payload
     
@@ -37,7 +32,7 @@ export default class ViewsController{
             // Defaults in case they don't arrive with github
             let name = "default"
             let email = "defaultEmail"
-            let role = "defaultRole"
+            let role = "user"
             if (req.user){
                 name = req.user.name
                 email = req.user.email
@@ -50,7 +45,7 @@ export default class ViewsController{
             let query = req.query.query 
     
             // get the products
-            let response = await productDBManager.getProducts(limit, page, sort, query);
+            let response = await ProductService.getProducts(limit, page, sort, query);
     
             let {payload, hasPrevPage, hasNextPage, prevLink, nextLink, pageNum} = response
     
@@ -76,7 +71,7 @@ export default class ViewsController{
             let cid = req.params.cid
     
             // get the wanted cart products
-            let prods = await cartDBManager.getCartByIdPopulate(cid);
+            let prods = await CartService.getCartByIdPopulate(cid);
     
             // If we get null then the cart with given id wasn't found
             if (!prods){
@@ -95,7 +90,7 @@ export default class ViewsController{
         // Try catch in case the number conversion of limit returns an error
         try {
             // get the products
-            let productRes = await productDBManager.getProducts(100,1,"","");
+            let productRes = await ProductService.getProducts(100,1,"","");
     
             let products = productRes.payload
     

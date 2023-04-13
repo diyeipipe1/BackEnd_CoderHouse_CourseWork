@@ -1,8 +1,5 @@
-import UserDBManager from "../dao/dbmanagers/UserDBManager.js";
+import {UserService} from "../repositories/index.repositories.js"
 import passport from "passport";
-
-// activate the user manager
-const userDBManager = new UserDBManager()
 
 // Create class for exporting Callback functions
 export default class UsersController{
@@ -24,7 +21,6 @@ export default class UsersController{
     authLogin = async(req, res) => {
         try {
             if (req.user.errorMess) {
-                //TODO: Catch passport error
                 throw new Error(req.user.errorMess)
             }
 
@@ -61,7 +57,7 @@ export default class UsersController{
     authCurrent = (req, res) => {
         try {
             if (req.session.user){ 
-                return res.send({status:"Ok", payload: req.session.user})
+                return res.send({status:"Ok", payload: UserService.getUserCurrent(req.session.user)})
             }
             res.status(400).send({status:"BadRequest", error: "No logged used"})
     
