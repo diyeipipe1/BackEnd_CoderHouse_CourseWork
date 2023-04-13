@@ -82,7 +82,7 @@ export default class ViewsController{
     
         } catch (err) {
             // Error handling if the cartManager sends an error
-            return res.status(400).send({status:"InternalServerError", error: err.message})
+            return res.status(500).send({status:"InternalServerError", error: err.message})
         }
     }
 

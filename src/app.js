@@ -2,7 +2,7 @@ import express from "express";
 import session from "express-session";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
-import __dirname,{MongoConnection, Port, SessionSecret} from './utils.js';
+import __dirname,{MongoConnection, Port, SessionSecret, ErrorHandler} from './utils.js';
 import productRouter from "./routes/products.routes.js";
 import cartRouter from "./routes/carts.routes.js";
 import userRouter from "./routes/users.routes.js";
@@ -13,7 +13,7 @@ import MessagesDBManager from "./dao/dbmanagers/MessagesDBManager.js";
 import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
 import passport from "passport";
-import initPassport from "./config/passport.config.js"; 
+import initPassport from "./config/passport.config.js";
 
 // Bring the module
 const app = express();
@@ -111,6 +111,7 @@ chatNameSpace.on("connection", socket => {
     })
 })
 
+app.use(ErrorHandler)
 
 export default viewNameSpace;
 
