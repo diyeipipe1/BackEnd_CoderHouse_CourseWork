@@ -3,6 +3,7 @@ import {dirname} from 'path';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import fetch from 'node-fetch';
+import {faker} from '@faker-js/faker';
 
 // Hash passwords 
 export const createHash =password=> bcrypt.hashSync(password,bcrypt.genSaltSync(10)); //irrervertible
@@ -41,3 +42,19 @@ export const HandlePolicies = (policies) => async(req, res, next) => {
         return res.status(400).send({status: "AuthError", error: error.message})
     }
 } 
+
+// Mock Products
+faker.locale= 'es';
+const categories = ['Electronics', 'Books', 'Clothing', 'Home', 'Toys', 'Beauty', 'Food', 'Sports']
+export const GenerateProduct = () => {
+    return {
+        title: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        price: faker.commerce.price(),
+        thumbnail: faker.image.imageUrl(),
+        code: faker.datatype.uuid(),
+        stock: faker.datatype.number({min:1, max: 100}),
+        category: faker.helpers.arrayElement(categories),
+        status: true
+    }
+}

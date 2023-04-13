@@ -1,4 +1,5 @@
 import {ProductService} from "../repositories/index.repositories.js";
+import {GenerateProduct} from  "../utils.js"
 
 // Create class for exporting Callback functions
 export default class ProductController{
@@ -105,10 +106,26 @@ export default class ProductController{
                 return res.status(400).send({status: "NotUpdatedError", error: "there was an error deleting the product"})
             }
     
-            res.status(200).send({status:"Ok", error: "product deleted correctly"})
+            res.status(200).send({status:"Ok", payload: "product deleted correctly"})
     
         } catch (err) {
             return res.status(404).send({status:"NotFoundError", error: err.message})
+        }
+    }
+
+    mockProducts= async(req, res) => {
+        try {
+            let prodArray = []
+
+            // Call the mock product function 100 times and append all 100 mock products
+            for (let _ = 0; _ < 100; _++) {
+                prodArray.push(GenerateProduct())
+            }
+
+            return res.send({status: "Ok", payload: prodArray})
+
+        } catch (err) {
+            return res.status(404).send({status:"Error", error: err.message})
         }
     }
 }

@@ -16,6 +16,9 @@ const productController = new ProductController()
 // Get all or Get limited number by query ?=limit 
 router.get("/", productController.getProducts)
 
+// Get mock products array
+router.get("/mockingproducts", productController.mockProducts)
+
 // Get by product ID
 router.get("/:pid", productController.getProductById)
 
