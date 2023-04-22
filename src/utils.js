@@ -64,6 +64,7 @@ export const GenerateProduct = () => {
 // Error Middleware
 export const ErrorHandler = (error, req, res, next) => {
     // TODO: All the same, unless special treatment ocurrs, this could be simplified
+    // TODO: Elim custom error if not needed for final hand in
     switch (error.code){
         case ErrorCodes.MISSING_DATA:
             return res.status(error.statusCode).send({status: "error", error: error.name, details: error.cause || error.message });

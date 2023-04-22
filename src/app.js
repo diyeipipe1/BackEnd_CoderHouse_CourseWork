@@ -19,6 +19,9 @@ import initPassport from "./config/passport.config.js";
 const app = express();
 app.use(express.json()); // Important to work with JSON
 
+// Logger
+app.use(addLogger)
+
 // Connect to mongoDB
 mongoose.connect(MongoConnection, (error) => {
     if (error){
@@ -38,9 +41,6 @@ app.use(session({
     resave:false,
     saveUninitialized:false
 }))
-
-// Logger
-app.use(addLogger)
 
 // Passport
 initPassport();

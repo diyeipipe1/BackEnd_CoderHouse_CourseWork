@@ -38,7 +38,7 @@ export default class UsersController{
         try {
             if (req.session) req.session.destroy();
             if (req.user) req.user = {}
-            console.log("Logout well done")
+            req.logger.info("Logout well done")
             res.send("logout success!"); 
         } catch (err) {
             return res.status(400).send({status:"BadRequest", error: err.message})
