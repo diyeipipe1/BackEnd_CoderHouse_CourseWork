@@ -2,7 +2,7 @@ import express from "express";
 import session from "express-session";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
-import __dirname,{MongoConnection, Port, SessionSecret, ErrorHandler} from './utils.js';
+import __dirname,{MongoConnection, Port, SessionSecret, ErrorHandler, addLogger} from './utils.js';
 import productRouter from "./routes/products.routes.js";
 import cartRouter from "./routes/carts.routes.js";
 import userRouter from "./routes/users.routes.js";
@@ -38,6 +38,9 @@ app.use(session({
     resave:false,
     saveUninitialized:false
 }))
+
+// Logger
+app.use(addLogger)
 
 // Passport
 initPassport();

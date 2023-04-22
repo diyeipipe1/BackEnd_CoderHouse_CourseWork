@@ -4,7 +4,8 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 import {faker} from '@faker-js/faker';
-import {ErrorCodes} from './errors.js'
+import {ErrorCodes} from './errors.js';
+import winston from 'winston';
 
 // Hash passwords 
 export const createHash =password=> bcrypt.hashSync(password,bcrypt.genSaltSync(10)); //irrervertible
@@ -78,3 +79,46 @@ export const ErrorHandler = (error, req, res, next) => {
             return res.status(error.statusCode || 400).send({status: "error", error: error.name || "UncaughtError", error: error.message || error.cause});
     }
 }
+
+
+// Logger
+const customLevels = {
+    levels: {
+        fatal:   0,
+        error:   1,
+        warning: 2,
+        info:    3,
+        debug:   4,
+    },
+    colors: {
+        fatal:   'red',
+        error:   'yellow',
+        warning: 'green',
+        info:    'blue',
+        debug:   'white',
+    },
+}
+
+const logger = winston.createLogger({
+    levels: customLevels.levels,
+    transports: [
+        new winston.transports.Console({
+            level: 'debug',
+            format: winston.format.combine(
+                winston.format.colorize({colors: customLevels.colors}),
+                winston.format.simple()
+            )
+        }), 
+        new winston.transports.File({
+            level: 'error',
+            format: winston.format.simple(),
+            filename: './errors.log'
+        }), 
+    ]
+})
+
+export const addLogger = (req, res, next) => {
+    req.logger = logger;
+    next();
+}
+

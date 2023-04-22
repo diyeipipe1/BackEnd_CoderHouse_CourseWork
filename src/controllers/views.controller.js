@@ -105,4 +105,13 @@ export default class ViewsController{
     chat = async (req, res) => {
         res.render("chat.handlebars")
     }
+
+    loggerTest = (req, res) => {
+        req.logger.fatal("I am fatal")
+        req.logger.error("I am an error")
+        req.logger.warning("I am a warning")
+        req.logger.info("I am info")
+        req.logger.debug("And I am debug")
+        res.send("Check your console")
+    }
 }

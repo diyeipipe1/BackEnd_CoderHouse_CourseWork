@@ -41,6 +41,8 @@ router.get("/realtimeproducts", viewsController.realTimeProducts)
 router.get("/chat",  HandlePolicies(['USER']), viewsController.chat)
 
 
+// LoggerTest - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+router.get("/loggerTest", viewsController.loggerTest)
 
 // export the router
 export default router;
