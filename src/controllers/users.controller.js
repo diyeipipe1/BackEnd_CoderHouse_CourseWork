@@ -1,4 +1,5 @@
 import {UserService} from "../repositories/index.repositories.js"
+import MailerService from "../services/mailer.services.js"
 import passport from "passport";
 
 // Create class for exporting Callback functions
@@ -61,6 +62,37 @@ export default class UsersController{
             }
             res.status(400).send({status:"BadRequest", error: "No logged used"})
     
+        } catch (err) {
+            return res.status(400).send({status:"BadRequest", error: err.message})
+        }
+    }
+
+    sendEmail = async(req, res) => {
+        try {
+            let email = req.body.email
+
+            const userBool = await UserService.checkUser(email)
+
+            if (userBool) {
+                //Send mail
+                const result = await MailerService.sendRecoveryMail({
+                    from: "diazrochajuanfe@gmail.com",
+                    to: email,
+                    subject: "Recover password",
+                    html: "",
+                    attachments: []
+                })
+
+                if (result.accepted && result.accepted.length > 0){
+                    //Set up cookie 1hr
+                    //STEPHOMEWORK
+                    return res.send({status:"success", payload: result})
+                }
+                return res.status(400).send({status:"BadRequest", error: "Error, email not sent"})
+            }
+
+            return res.status(400).send({status:"BadRequest", error: "No user with that ID"})
+            
         } catch (err) {
             return res.status(400).send({status:"BadRequest", error: err.message})
         }

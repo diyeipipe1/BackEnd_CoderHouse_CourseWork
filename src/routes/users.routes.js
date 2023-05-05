@@ -29,6 +29,9 @@ router.get('/githubcalls', usersController.passportGitHubCallback, usersControll
 // Show current user
 router.get('/current', usersController.authCurrent)
 
+// Try to send recovery email if user exists
+router.post('/sendemail', usersController.sendEmail)
+
 
 // export the router
 export default router;

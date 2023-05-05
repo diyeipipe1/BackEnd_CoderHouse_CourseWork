@@ -44,5 +44,9 @@ router.get("/chat",  HandlePolicies(['USER']), viewsController.chat)
 // LoggerTest - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 router.get("/loggerTest", viewsController.loggerTest)
 
+
+// Recover Password - - - - - - - - - - - - - - - - - - - - - - - - - - -
+router.get("/recover", viewsController.recoverPassword)
+
 // export the router
 export default router;

@@ -114,4 +114,8 @@ export default class ViewsController{
         req.logger.debug("And I am debug")
         res.send("Check your console")
     }
+
+    recoverPassword = (req, res) => {
+        res.render("recover")
+    }
 }
