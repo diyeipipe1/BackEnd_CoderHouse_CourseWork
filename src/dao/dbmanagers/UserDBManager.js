@@ -95,4 +95,28 @@ export default class UserDBManager{
             }
         }
     } 
+
+    // Update 
+    async updateUser(email, userNew){
+        try {
+            let userAct = await this.getUserByEmail(email)
+            if (userAct){
+                let result = await UserModel.updateOne({_id:userAct.id}, userNew);
+                console.log(result)
+                
+                if (result.modifiedCount >0){
+                    let finalUser = await this.getUserByEmail(email)
+                    return finalUser
+                }else{
+                    console.log('error updating user')
+                    throw new Error("error updating user, data might be wrong type or same as current document")
+                }
+            }else{
+                console.log('user to update not found')
+                throw new Error("no user found with id given to update")
+            }
+        } catch (error) {
+            throw error
+        }
+    }
 }

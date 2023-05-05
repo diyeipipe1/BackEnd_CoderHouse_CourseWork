@@ -1,9 +1,10 @@
 import {CartService, ProductService} from "../repositories/index.repositories.js"
+import jwt from 'jsonwebtoken';
 
 // Create class for exporting Callback functions
 export default class ViewsController{
     login = (req, res) => {
-        req.session.destroy() // TODO: Check if necessary
+        //req.session.destroy() // TODO: Check if necessary
         res.render("login")
     }
 
@@ -117,5 +118,31 @@ export default class ViewsController{
 
     recoverPassword = (req, res) => {
         res.render("recover")
+    }
+
+    resetPassword = (req, res) => {
+        try {
+            let token = req.params.token
+            let result;
+    
+            jwt.verify(token, "JWT_KEY", function(error, decoded) {
+                if (error) {
+                    if (error instanceof jwt.TokenExpiredError) {
+                        result = "EXPIRED";
+                    }
+                } else {
+                    result = decoded;
+                }
+            });
+    
+            let hasExpired = true
+            if (result != "EXPIRED") {
+                hasExpired = false
+            }
+            
+            res.render("resetpassword", {result, hasExpired})
+        } catch (err) {
+            return res.status(400).send({status:"TokenError", error: err.message});
+        }
     }
 }

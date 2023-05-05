@@ -17,8 +17,16 @@ form.addEventListener('submit',evt=>{
     .then(json=>{
         //console.log(json)
         if (json.status == "success"){
-            //STEPHOMEWORK
-            window.location.href= "/products";
+            Swal.fire({
+                icon: 'success',
+                title: 'Mail sent'
+            })
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'An error ocurred',
+                text: json.error
+            })
         }
     });
     //TODO: Error handling empty fields

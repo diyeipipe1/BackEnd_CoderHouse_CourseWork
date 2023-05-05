@@ -1,6 +1,8 @@
 import {UserService} from "../repositories/index.repositories.js"
 import MailerService from "../services/mailer.services.js"
 import passport from "passport";
+import jwt from 'jsonwebtoken';
+import {createHash, isValidPassword} from "../utils.js"
 
 // Create class for exporting Callback functions
 export default class UsersController{
@@ -73,26 +75,70 @@ export default class UsersController{
 
             const userBool = await UserService.checkUser(email)
 
-            if (userBool) {
+            if (userBool && userBool==true) {
+                //Set up token 
+                let token = jwt.sign({email}, "JWT_KEY", {expiresIn: "1h"});
+
                 //Send mail
                 const result = await MailerService.sendRecoveryMail({
                     from: "diazrochajuanfe@gmail.com",
                     to: email,
                     subject: "Recover password",
-                    html: "",
+                    html: `
+                    <div>
+                        Click the button to reset your password
+                        <br>  
+                        (Link valid for 1 hour)
+                        <br>
+                        <a href="http://localhost:8080/resetPassword/${token}" style="background-color:#008CBA; border:none; color:white; padding: 12px 28px; text-align:center; text-decoration:none; display:inline-block; font-size:16px; margin:4px 2px; cursor:pointer;">Reset Password</a>
+                    </div>
+                    `,
                     attachments: []
                 })
 
                 if (result.accepted && result.accepted.length > 0){
-                    //Set up cookie 1hr
-                    //STEPHOMEWORK
-                    return res.send({status:"success", payload: result})
+                    return res.send({status:"success", payload: result, email: email})
                 }
                 return res.status(400).send({status:"BadRequest", error: "Error, email not sent"})
             }
 
-            return res.status(400).send({status:"BadRequest", error: "No user with that ID"})
+            return res.status(400).send({status:"BadRequest", error: "No user with that Email"})
             
+        } catch (err) {
+            return res.status(400).send({status:"BadRequest", error: err.message})
+        }
+    }
+
+    restorePassword = async(req, res) => {
+        try {
+            let passwordNew = req.body.password;
+            let email = req.headers.email;
+
+            // Error checking, see if there's missing data
+            if (passwordNew){
+                // check user
+                const user = await UserService.getUserByEmail(email)
+    
+                let passNewHash = createHash(passwordNew)
+    
+                // If we get something falsy then the user wasn't retrieved
+                if (!user){
+                    return res.status(400).send({status:"BadRequest", error: "error retrieving user"})
+                }
+    
+                // The new password is compared to the old one, if they're the same, error
+                if (isValidPassword(user, passwordNew)){
+                    return res.send({status:"PreviousData", error: "password can't be the same as previous one"})
+                }
+    
+                user.password = passNewHash
+
+                const userUpdated = await UserService.updateUser(email, user)
+    
+                return res.status(200).send({status:"success", payload: userUpdated})
+            }else{
+                return res.status(400).send({status:"BadRequest", error: "password can not be empty"})
+            }
         } catch (err) {
             return res.status(400).send({status:"BadRequest", error: err.message})
         }

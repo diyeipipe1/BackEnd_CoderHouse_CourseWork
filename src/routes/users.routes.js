@@ -32,6 +32,9 @@ router.get('/current', usersController.authCurrent)
 // Try to send recovery email if user exists
 router.post('/sendemail', usersController.sendEmail)
 
+// Send password to recover
+router.post('/restorepassword', usersController.restorePassword)
+
 
 // export the router
 export default router;

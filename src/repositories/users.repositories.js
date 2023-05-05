@@ -77,4 +77,13 @@ export default class UserRepository{
         }
     }
 
+    // Update user
+    async updateUser(email, userNew){
+        try {
+            return await this.dao.updateUser(email, userNew)
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }

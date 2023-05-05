@@ -48,5 +48,8 @@ router.get("/loggerTest", viewsController.loggerTest)
 // Recover Password - - - - - - - - - - - - - - - - - - - - - - - - - - -
 router.get("/recover", viewsController.recoverPassword)
 
+// After link, reset the password  - - - - - - - - - - - - - - - - - - -
+router.get("/resetPassword/:token", viewsController.resetPassword)
+
 // export the router
 export default router;
