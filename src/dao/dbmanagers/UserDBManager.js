@@ -119,4 +119,33 @@ export default class UserDBManager{
             throw error
         }
     }
+
+    // Update membership
+    async updateMembership(uid){
+        try {
+            let user = await this.getUserById(uid)
+
+            if (user){
+                if (user.role == "user") {
+                    user.role = "premium"
+                }else if (user.role == "premium"){
+                    user.role = "user"
+                }  
+
+                let result = await UserModel.updateOne({_id:user.id}, user);
+
+                if (result.modifiedCount >0){
+                    let finalUser = await this.getUserByEmail(user.email)
+                    return finalUser
+                }else{
+                    console.log('error updating user')
+                    throw new Error("error updating user, data might be wrong type or same as current document")
+                }
+            }
+
+            throw new Error("no user found with given id")
+        } catch (error) {
+            throw error
+        }
+    }
 }

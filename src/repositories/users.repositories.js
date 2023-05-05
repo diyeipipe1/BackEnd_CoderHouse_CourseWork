@@ -86,4 +86,13 @@ export default class UserRepository{
         }
     }
 
+    // Update user membership
+    async updateMembership(uid){
+        try {
+            return await this.dao.updateMembership(uid)
+        } catch (error) {
+            throw error;
+        }
+    }
+
 }

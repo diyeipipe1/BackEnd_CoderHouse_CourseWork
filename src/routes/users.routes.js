@@ -35,6 +35,9 @@ router.post('/sendemail', usersController.sendEmail)
 // Send password to recover
 router.post('/restorepassword', usersController.restorePassword)
 
+// Change normal to premium
+router.get("/premium/:uid", usersController.updateMembership)
+
 
 // export the router
 export default router;

@@ -143,4 +143,24 @@ export default class UsersController{
             return res.status(400).send({status:"BadRequest", error: err.message})
         }
     }
+
+    updateMembership = async(req, res) => {
+        try {
+            let uid = req.params.uid
+    
+            // Try to update the user with the class function
+            let user = await UserService.updateMembership(uid)
+    
+    
+            // If we get something falsy then the user wasn't updated correctly
+            if (!user){
+                return res.status(400).send({status: "NotUpdatedError", error: "there was an error updating the user"})
+            }
+    
+            res.send({status: "success", payload: user})
+    
+        } catch (err) {
+            return res.status(404).send({status:"NotFoundError", error: err.message})
+        }
+    }
 }

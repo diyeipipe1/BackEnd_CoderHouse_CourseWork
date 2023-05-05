@@ -23,7 +23,7 @@ router.post("/", cartController.createNewCart)
 router.get("/:cid", cartController.getAllProducts)
 
 // Add quantity to a product
-router.post("/:cid/product/:pid", HandlePolicies(['USER']), cartController.addQuantity)
+router.post("/:cid/product/:pid", HandlePolicies(['USER','PREMIUM']), cartController.addQuantity)
 
 // Update whole product list 
 router.put("/:cid", cartController.updateProducts)
