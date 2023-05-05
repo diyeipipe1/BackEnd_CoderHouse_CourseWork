@@ -7,9 +7,9 @@ export default class ProductRepository{
     }
 
     // Create
-    async addProduct(title, description, price, thumbnail, code, stock, category, status){
+    async addProduct(title, description, price, thumbnail, code, stock, category, status, owner){
         try {
-            const productDTO = new ProductDTO({title, description, price, thumbnail, code, stock, category, status})
+            const productDTO = new ProductDTO({title, description, price, thumbnail, code, stock, category, status, owner})
 
             return await this.dao.addProduct(
                 productDTO.title, 
@@ -19,7 +19,8 @@ export default class ProductRepository{
                 productDTO.code, 
                 productDTO.stock, 
                 productDTO.category, 
-                productDTO.status
+                productDTO.status,
+                productDTO.owner
             )
         } catch (error) {
             throw error;

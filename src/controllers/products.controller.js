@@ -52,12 +52,15 @@ export default class ProductController{
             // Error checking, see if there's missing data
             if (prodNew.title && prodNew.description && prodNew.price && prodNew.thumbnail && 
                 prodNew.code && prodNew.stock && prodNew.category){
-    
+                
+                if (!prodNew.owner){
+                    prodNew.owner = ""
+                }
                 // Create product
                 //const product = await productManager.addProduct(prodNew.title, prodNew.description, prodNew.price,
                 //    prodNew.thumbnail, prodNew.code, prodNew.stock, prodNew.category, prodNew.status)
                 const product = await ProductService.addProduct(prodNew.title, prodNew.description, prodNew.price,
-                    prodNew.thumbnail, prodNew.code, prodNew.stock, prodNew.category, prodNew.status)
+                    prodNew.thumbnail, prodNew.code, prodNew.stock, prodNew.category, prodNew.status, prodNew.owner)
         
                 // If we get something falsy then the product wasn't created correctly
                 if (!product){
@@ -69,7 +72,7 @@ export default class ProductController{
                 CustomError.CreateError({statusCode: 400, name:"BadRequest", cause: "missing field or fields in request body", code: ErrorCodes.MISSING_DATA})
             }
         } catch (err) {
-            if (error.statusCode && (error.statusCode == 400)){return next(error)}
+            if (err.statusCode && (error.statusCode == 400)){return next(error)}
 
             // Error handling if the productManager sends an error
             return CustomError.CreateError({statusCode: 400, name:"BadRequest", message: err.message, code: ErrorCodes.BAD_REQUEST})

@@ -8,5 +8,6 @@ export default class ProductDTO{
         this.stock = productRaw.stock ? productRaw.stock : 1 
         this.category = productRaw.category ? productRaw.category : "CategoryDefault" 
         this.status = productRaw.status ? productRaw.status : true
+        this.owner = productRaw.owner ? productRaw.owner : "6454987266bf726397cc38a2"
     }
 }

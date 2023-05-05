@@ -23,7 +23,7 @@ router.get("/mockingproducts", productController.mockProducts)
 router.get("/:pid", productController.getProductById)
 
 // Post product
-router.post("/", HandlePolicies(['ADMIN']), productController.createProduct)
+router.post("/", productController.createProduct) //TODO: not allow postman HandlePolicies(['ADMIN']), productController.createProduct)
 
 // Put product
 router.put("/:pid", HandlePolicies(['ADMIN']), productController.updateProduct)

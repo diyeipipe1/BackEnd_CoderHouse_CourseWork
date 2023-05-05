@@ -36,6 +36,11 @@ const productSchema = new mongoose.Schema({
     status: {
         type: Boolean,
         required: false
+    }, 
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'usersgit',
+        default: "6454987266bf726397cc38a2"
     }
 })
 

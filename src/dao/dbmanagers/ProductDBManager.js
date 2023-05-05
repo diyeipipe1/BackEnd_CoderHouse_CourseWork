@@ -2,7 +2,7 @@ import {ProductModel} from "../models/product.models.js";
 
 export default class ProductDBManager{
     // Create
-    async addProduct(title, description, price, thumbnail, code, stock, category, status){
+    async addProduct(title, description, price, thumbnail, code, stock, category, status, owner){
         try {
             // If no status was sent, set as true
             status = typeof status !== 'undefined' ? status : true;
@@ -15,7 +15,8 @@ export default class ProductDBManager{
                 code,
                 stock,
                 category,
-                status
+                status,
+                owner
             })
 
             // Return product added
