@@ -1,0 +1,144 @@
+paths:
+  /api/products:
+    get:
+      summary: Get all products or limited number by query
+      description: Returns a list of products or a limited number of products based on the query parameter "limit"
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+          description: The maximum number of products to return
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      summary: Create a new product
+      description: Creates a new product with the provided data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad Request
+  /products/mockingproducts:
+    get:
+      summary: Get mock products array
+      description: Returns an array of mock products
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+  /products/{pid}:
+    parameters:
+      - in: path
+        name: pid
+        required: true
+        schema:
+          type: string
+        description: The ID of the product to retrieve, update or delete
+    get:
+      summary: Get a product by ID
+      description: Returns the product with the specified ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Not Found
+    put:
+      summary: Update a product by ID
+      description: Updates the product with the specified ID with the provided data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Not Found
+    delete:
+      summary: Delete a product by ID
+      description: Deletes the product with the specified ID
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+      security:
+        - bearerAuth: []
+   
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: The unique identifier of the product.
+        title:
+          type: string
+          description: The title of the product.
+        description:
+          type: string
+          description: The description of the product.
+        price:
+          type: number
+          description: The price of the product.
+        thumbnail:
+          type: string
+          description: The thumbnail URL of the product.
+        code:
+          type: string
+          description: The code of the product.
+        stock:
+          type: number
+          description: The stock of the product.
+        category:
+          type: string
+          description: The category of the product.
+        status:
+          type: boolean
+          description: The status of the product.
+        owner:
+          type: ObjectId
+          description: The owner of the product.
+      required:
+        - title
+        - description
+        - price
+        - thumbnail
+        - code
+        - stock
+        - category

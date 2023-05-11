@@ -30,7 +30,7 @@ const swaggerOptions = {
             description: "APIs del proyecto"
         }
     }, 
-    apis: ['./docs/**.yaml']
+    apis: ['./src/docs/**.yaml']
 }
 
 const specs = swaggerJSDoc(swaggerOptions);
