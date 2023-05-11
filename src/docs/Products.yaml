@@ -37,7 +37,7 @@ paths:
                 $ref: '#/components/schemas/Product'
         '400':
           description: Bad Request
-  /products/mockingproducts:
+  /api/products/mockingproducts:
     get:
       summary: Get mock products array
       description: Returns an array of mock products
@@ -50,7 +50,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
-  /products/{pid}:
+  /api/products/{pid}:
     parameters:
       - in: path
         name: pid
@@ -96,8 +96,6 @@ paths:
           description: No Content
         '404':
           description: Not Found
-      security:
-        - bearerAuth: []
    
 components:
   schemas:

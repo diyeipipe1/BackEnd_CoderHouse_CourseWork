@@ -127,7 +127,7 @@ export default class CartController{
                 return res.status(400).send({status: "NotDeletedError", error: "there was an error deleting the product"})
             }
     
-            res.status(200).send({status:"Ok", error: "product deleted correctly"})
+            res.status(200).send({status:"Ok", payload: "product deleted correctly"})
         } catch (err) {
             return res.status(404).send({status:"CartNotFoundError", error: err.message})
         }

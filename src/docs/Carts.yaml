@@ -1,0 +1,244 @@
+paths:
+  /api/carts:
+    post:
+      summary: Creates a new shopping cart.
+      operationId: createNewCart
+      responses:
+        200:
+          description: A new shopping cart has been created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        400:
+          description: There was an error creating the cart.
+    get:
+      summary: Gets all products from a given shopping cart.
+      operationId: getAllProducts
+      parameters:
+        - in: path
+          name: cid
+          description: The ID of the shopping cart.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: A list of all products in the shopping cart.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        404:
+          description: The shopping cart with the given ID was not found.
+    put:
+      summary: Updates all products from a given shopping cart.
+      operationId: updateProducts
+      parameters:
+        - in: path
+          name: cid
+          description: The ID of the shopping cart.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        200:
+          description: A list of all products in the shopping cart.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        404:
+          description: The shopping cart with the given ID was not found.
+    delete:
+      summary: Deletes all products from a given shopping cart.
+      operationId: deleteProducts
+      parameters:
+        - in: path
+          name: cid
+          description: The ID of the shopping cart.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Empty cart.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        404:
+          description: The shopping cart with the given ID was not found.
+  
+  /{cid}/product/{pid}:
+    put:
+      summary: Update quantity of product in a given shopping cart.
+      operationId: updateQuantity
+      parameters:
+        - in: path
+          name: cid
+          description: The ID of the shopping cart.
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pid
+          description: The ID of the product to add quantity to.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            quantity:
+              type: number
+      responses:
+        200:
+          description: The quantity of the product was successfully updated.
+        400:
+          description: There was an error adding the product.
+        404:
+          description: The shopping cart with the given ID was not found.
+    post:
+      summary: Adds quantity to a product in a given shopping cart.
+      operationId: addQuantity
+      parameters:
+        - in: path
+          name: cid
+          description: The ID of the shopping cart.
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pid
+          description: The ID of the product to add quantity to.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: The quantity of the product was successfully updated.
+        400:
+          description: There was an error adding the product.
+        404:
+          description: The shopping cart with the given ID was not found.
+    delete:
+      summary: Deletes product in a given shopping cart.
+      operationId: deleteProduct
+      parameters:
+        - in: path
+          name: cid
+          description: The ID of the shopping cart.
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pid
+          description: The ID of the product to add quantity to.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Product deleted correctly.
+        400:
+          description: There was an error adding the product.
+        404:
+          description: The shopping cart with the given ID was not found.             
+  /{cid}/purchase:
+    get:
+      summary: Purchase products from a given shopping cart.
+      operationId: purchaseProduct
+      parameters:
+        - in: path
+          name: cid
+          description: The ID of the shopping cart.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: The products were successfully purchased.
+        400:
+          description: There was an error purchasing the products.
+        404:
+          description: The shopping cart with the given ID was not found.
+
+components:
+  schemas:
+    CartItem:
+      type: object
+      properties:
+        product:
+          type: string
+          description: The unique identifier of the product.
+        quantity:
+          type: integer
+          minimum: 1
+          description: The quantity of the product in the cart.
+
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier of the cart.
+        products:
+          type: array
+          description: An array of objects representing the products in the cart.
+          items:
+            $ref: '#/components/schemas/CartItem'
+          minItems: 1
+      required:
+        - products
+    
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: The unique identifier of the product.
+        title:
+          type: string
+          description: The title of the product.
+        description:
+          type: string
+          description: The description of the product.
+        price:
+          type: number
+          description: The price of the product.
+        thumbnail:
+          type: string
+          description: The thumbnail URL of the product.
+        code:
+          type: string
+          description: The code of the product.
+        stock:
+          type: number
+          description: The stock of the product.
+        category:
+          type: string
+          description: The category of the product.
+        status:
+          type: boolean
+          description: The status of the product.
+        owner:
+          type: ObjectId
+          description: The owner of the product.
+      required:
+        - title
+        - description
+        - price
+        - thumbnail
+        - code
+        - stock
+        - category
+
+
