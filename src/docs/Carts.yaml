@@ -83,7 +83,6 @@ paths:
                 $ref: '#/components/schemas/Cart'
         404:
           description: The shopping cart with the given ID was not found.
-  
   /{cid}/product/{pid}:
     put:
       tags:
