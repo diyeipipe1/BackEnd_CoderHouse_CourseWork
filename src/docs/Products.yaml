@@ -1,6 +1,8 @@
 paths:
   /api/products:
     get:
+      tags:
+            - Products
       summary: Get all products or limited number by query
       description: Returns a list of products or a limited number of products based on the query parameter "limit"
       parameters:
@@ -20,6 +22,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Product'
     post:
+      tags:
+            - Products
       summary: Create a new product
       description: Creates a new product with the provided data
       requestBody:
@@ -39,6 +43,8 @@ paths:
           description: Bad Request
   /api/products/mockingproducts:
     get:
+      tags:
+            - Products
       summary: Get mock products array
       description: Returns an array of mock products
       responses:
@@ -59,6 +65,8 @@ paths:
           type: string
         description: The ID of the product to retrieve, update or delete
     get:
+      tags:
+            - Products
       summary: Get a product by ID
       description: Returns the product with the specified ID
       responses:
@@ -71,6 +79,8 @@ paths:
         '404':
           description: Not Found
     put:
+      tags:
+            - Products
       summary: Update a product by ID
       description: Updates the product with the specified ID with the provided data
       requestBody:
@@ -89,6 +99,8 @@ paths:
         '404':
           description: Not Found
     delete:
+      tags:
+            - Products
       summary: Delete a product by ID
       description: Deletes the product with the specified ID
       responses:
@@ -140,3 +152,14 @@ components:
         - code
         - stock
         - category
+      example: 
+        _id: ObjectId("anfoienfwoi123nf")
+        title: Rose
+        description: A red rose
+        price: 25
+        thumbnail: image.jpg
+        code: AB205
+        stock: 3
+        category: Flowers
+        status: true
+        owner: ObjectId("anfoienfwfefoi123nf")

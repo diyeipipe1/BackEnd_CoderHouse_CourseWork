@@ -1,6 +1,8 @@
 paths:
   /api/carts:
     post:
+      tags:
+            - Carts
       summary: Creates a new shopping cart.
       operationId: createNewCart
       responses:
@@ -13,6 +15,8 @@ paths:
         400:
           description: There was an error creating the cart.
     get:
+      tags:
+            - Carts
       summary: Gets all products from a given shopping cart.
       operationId: getAllProducts
       parameters:
@@ -32,6 +36,8 @@ paths:
         404:
           description: The shopping cart with the given ID was not found.
     put:
+      tags:
+            - Carts
       summary: Updates all products from a given shopping cart.
       operationId: updateProducts
       parameters:
@@ -57,6 +63,8 @@ paths:
         404:
           description: The shopping cart with the given ID was not found.
     delete:
+      tags:
+            - Carts
       summary: Deletes all products from a given shopping cart.
       operationId: deleteProducts
       parameters:
@@ -78,6 +86,8 @@ paths:
   
   /{cid}/product/{pid}:
     put:
+      tags:
+            - Carts
       summary: Update quantity of product in a given shopping cart.
       operationId: updateQuantity
       parameters:
@@ -107,6 +117,8 @@ paths:
         404:
           description: The shopping cart with the given ID was not found.
     post:
+      tags:
+            - Carts
       summary: Adds quantity to a product in a given shopping cart.
       operationId: addQuantity
       parameters:
@@ -130,6 +142,8 @@ paths:
         404:
           description: The shopping cart with the given ID was not found.
     delete:
+      tags:
+            - Carts
       summary: Deletes product in a given shopping cart.
       operationId: deleteProduct
       parameters:
@@ -154,6 +168,8 @@ paths:
           description: The shopping cart with the given ID was not found.             
   /{cid}/purchase:
     get:
+      tags:
+            - Carts
       summary: Purchase products from a given shopping cart.
       operationId: purchaseProduct
       parameters:
@@ -198,47 +214,4 @@ components:
           minItems: 1
       required:
         - products
-    
-    Product:
-      type: object
-      properties:
-        _id:
-          type: ObjectId
-          description: The unique identifier of the product.
-        title:
-          type: string
-          description: The title of the product.
-        description:
-          type: string
-          description: The description of the product.
-        price:
-          type: number
-          description: The price of the product.
-        thumbnail:
-          type: string
-          description: The thumbnail URL of the product.
-        code:
-          type: string
-          description: The code of the product.
-        stock:
-          type: number
-          description: The stock of the product.
-        category:
-          type: string
-          description: The category of the product.
-        status:
-          type: boolean
-          description: The status of the product.
-        owner:
-          type: ObjectId
-          description: The owner of the product.
-      required:
-        - title
-        - description
-        - price
-        - thumbnail
-        - code
-        - stock
-        - category
-
 
