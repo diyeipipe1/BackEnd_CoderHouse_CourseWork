@@ -14,10 +14,27 @@ import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import initPassport from "./config/passport.config.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUIExpress from "swagger-ui-express";
 
 // Bring the module
 const app = express();
 app.use(express.json()); // Important to work with JSON
+
+// Swagger
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: "Documentación del API",
+            description: "APIs del proyecto"
+        }
+    }, 
+    apis: ['./docs/**.yaml']
+}
+
+const specs = swaggerJSDoc(swaggerOptions);
+app.use('/apidocs', swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
 
 // Logger
 app.use(addLogger)
