@@ -3,6 +3,8 @@ import __dirname from '../utils.js'
 import CartController from "../controllers/carts.controller.js"
 import {HandlePolicies} from "../utils.js"
 
+//TODO: Create simple erase cart by ID
+
 // Bring the module
 const router = express.Router();
 
