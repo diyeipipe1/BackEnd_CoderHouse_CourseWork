@@ -39,8 +39,18 @@ export default class UsersController{
 
     authLogout = async (req, res) => {
         try {
-            if (req.session) req.session.destroy();
-            if (req.user) req.user = {}
+            let email = ""
+            if (req.session) {
+                email = req.session.user.email;
+                req.session.destroy();
+            }
+            if (req.user) {
+                email = req.user.email;
+                req.user = {}
+            }
+            
+            await UserService.updateLastConnection(email)
+
             req.logger.info("Logout well done")
             res.send("logout success!"); 
         } catch (err) {

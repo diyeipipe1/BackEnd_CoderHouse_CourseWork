@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import {getCurrentFormattedDate} from "../../utils.js"
 
 const userCollection = 'usersgit';
 
@@ -34,6 +35,16 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'carts',
         required: true
+    },
+    documents: [
+        {
+          name: { type: String },
+          reference: { type: String }
+        }
+    ],
+    last_connection: { 
+        type: Date, 
+        default: getCurrentFormattedDate
     }
 })
 

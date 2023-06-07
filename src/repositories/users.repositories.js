@@ -95,4 +95,12 @@ export default class UserRepository{
         }
     }
 
-}
+    // Update last_connection
+    async updateLastConnection(email){
+        try {
+            return await this.dao.updateLastConnection(email)
+        } catch (error) {
+            throw error;
+        }
+    }
+    }

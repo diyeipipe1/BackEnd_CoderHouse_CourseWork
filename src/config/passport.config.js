@@ -59,7 +59,10 @@ const initPassport = () => {
                         return done(null, {_id:0, errorMess:"email or password invalid"})
                     }
         
-                    done(null, user)
+                    // Update last connection
+                    const userLastConn = await UserService.updateLastConnection(user.email)
+
+                    done(null, userLastConn)
                 }else{
                     return done(null, {_id:0, errorMess:"missing field or fields in request body"})
                 }

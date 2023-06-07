@@ -1,4 +1,5 @@
 import {UserModel} from "../models/user.models.js";
+import {getCurrentFormattedDate} from "../../utils.js"
 
 export default class UserDBManager{
     // Register
@@ -144,6 +145,25 @@ export default class UserDBManager{
             }
 
             throw new Error("no user found with given id")
+        } catch (error) {
+            throw error
+        }
+    }
+
+    // Update last_connection
+    async updateLastConnection(email){
+        try {
+            let user = await this.getUserByEmail(email)
+            if (user){
+                user.last_connection = getCurrentFormattedDate();
+                
+                let userUpdated = await this.updateUser(email, user)
+                console.log(userUpdated.last_connection)
+                return userUpdated
+            }else{
+                console.log('user to update not found')
+                throw new Error("no user found with id given to update")
+            }
         } catch (error) {
             throw error
         }
