@@ -172,7 +172,7 @@ export default class UsersController{
             res.send({status: "success", payload: user})
     
         } catch (err) {
-            return res.status(404).send({status:"NotFoundError", error: err.message})
+            return res.status(400).send({status:"Error", error: err.message})
         }
     }
 

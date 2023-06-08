@@ -127,11 +127,16 @@ export default class UserDBManager{
             let user = await this.getUserById(uid)
 
             if (user){
-                if (user.role == "user") {
+                const check = await this.checkForDocumentation(uid)
+                //console.log(check)
+
+                if (user.role == "user" && check) {
                     user.role = "premium"
+                } else if (user.role == "user" && !check) {
+                    throw new Error("full documentation has not been processed")
                 }else if (user.role == "premium"){
                     user.role = "user"
-                }  
+                }
 
                 let result = await UserModel.updateOne({_id:user.id}, user);
 
@@ -145,6 +150,34 @@ export default class UserDBManager{
             }
 
             throw new Error("no user found with given id")
+        } catch (error) {
+            throw error
+        }
+    }
+
+    // Check for documents in user
+    async checkForDocumentation(uid){
+        try {
+            let user = await this.getUserById(uid)
+            if (user){
+                let profileCheck = false
+                let addressCheck = false
+                let accountCheck = false
+                for (const doc of user.documents){
+                    if (doc.name === "profile") profileCheck = true
+                    if (doc.name === "address") addressCheck = true
+                    if (doc.name === "account") accountCheck = true
+                }
+
+                if (profileCheck && addressCheck && accountCheck){
+                    return true
+                }
+                
+                return false
+            }else{
+                console.log('user to update not found')
+                throw new Error("no user found with id given to update")
+            }
         } catch (error) {
             throw error
         }
