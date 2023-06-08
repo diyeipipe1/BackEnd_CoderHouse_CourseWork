@@ -103,7 +103,7 @@ export default class UserDBManager{
             let userAct = await this.getUserByEmail(email)
             if (userAct){
                 let result = await UserModel.updateOne({_id:userAct.id}, userNew);
-                console.log(result)
+                //console.log(result)
                 
                 if (result.modifiedCount >0){
                     let finalUser = await this.getUserByEmail(email)
@@ -159,6 +159,26 @@ export default class UserDBManager{
                 
                 let userUpdated = await this.updateUser(email, user)
                 console.log(userUpdated.last_connection)
+                return userUpdated
+            }else{
+                console.log('user to update not found')
+                throw new Error("no user found with id given to update")
+            }
+        } catch (error) {
+            throw error
+        }
+    }
+
+    // Update documents 
+    async addDocuments(uid, docList){
+        try {
+            let user = await this.getUserById(uid)
+            if (user){
+                for (const doc of docList){
+                    user.documents.push(doc)
+                }
+                
+                let userUpdated = await this.updateUser(user.email, user)
                 return userUpdated
             }else{
                 console.log('user to update not found')

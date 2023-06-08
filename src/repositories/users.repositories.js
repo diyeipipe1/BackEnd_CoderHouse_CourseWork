@@ -103,4 +103,14 @@ export default class UserRepository{
             throw error;
         }
     }
+
+    // Add document
+    async addDocuments(uid, docList){
+        try {
+            return await this.dao.addDocuments(uid, docList)
+        } catch (error) {
+            throw error;
+        }
+    }
+
     }

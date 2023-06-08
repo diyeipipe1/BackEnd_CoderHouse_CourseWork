@@ -1,7 +1,7 @@
 import express from "express";
 import __dirname from '../utils.js'
 import ProductController from "../controllers/products.controller.js";
-import {HandlePolicies} from "../utils.js"
+import {HandlePolicies} from "../utils.js";
 
 // Bring the module
 const router = express.Router();

@@ -6,6 +6,7 @@ import fetch from 'node-fetch';
 import {faker} from '@faker-js/faker';
 import {ErrorCodes} from './errors.js';
 import winston from 'winston';
+import multer from "multer";
 
 // Hash passwords 
 export const createHash =password=> bcrypt.hashSync(password,bcrypt.genSaltSync(10)); //irrervertible
@@ -138,3 +139,7 @@ export const getCurrentFormattedDate = () => {
     });
 }
 
+
+// Multer  to process files
+const storage = multer.memoryStorage();
+export const uploader = multer({storage})

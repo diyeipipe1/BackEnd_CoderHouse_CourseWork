@@ -1,8 +1,10 @@
 import {UserService} from "../repositories/index.repositories.js"
 import MailerService from "../services/mailer.services.js"
+import ImageService from "../services/images.services.js"
 import passport from "passport";
 import jwt from 'jsonwebtoken';
-import {createHash, isValidPassword} from "../utils.js"
+import __dirname,{createHash, isValidPassword} from "../utils.js"
+import fs from "fs";
 
 // Create class for exporting Callback functions
 export default class UsersController{
@@ -171,6 +173,66 @@ export default class UsersController{
     
         } catch (err) {
             return res.status(404).send({status:"NotFoundError", error: err.message})
+        }
+    }
+
+    uploadDocuments = async(req, res) => {
+        try {
+            const uploadedFiles = req.files;
+            let uid = req.params.uid;
+
+            // if no files arrive, send an error
+            if (!uploadedFiles || uploadedFiles.length === 0) {
+                return res.status(400).send({status:"EmptyError", error: "No files were uploaded."});
+            }
+
+            let user = await UserService.getUserById(uid)
+
+            // Check if uid is valid
+            if (!user){
+               return res.status(404).send({status:"NotFoundError", error: "user with given ID not found"})
+            }
+
+            let docList = []
+
+            // take all the files and sort them depending on their field name
+            // for products cut out the prfix and leave the pid or prod name
+            for (const file of uploadedFiles){
+                let filePath = ""
+                let fileReference = ""
+                if (file.fieldname === "profile"){
+                    let extension = file.originalname
+                    extension = extension.replace(file.fieldname,"")
+
+                    fileReference = "/public/images/profiles/"+uid+extension
+                    filePath = __dirname + fileReference
+                }else if (file.fieldname.includes("product")) {
+                    // products are assumed to take the form product_name for fieldnames
+                    let prodID = file.fieldname
+                    prodID = prodID.replace("product_","")
+
+                    fileReference = "/public/images/products/"+file.originalname
+                    filePath = __dirname + fileReference 
+                }else {
+                    fileReference = "/public/images/documents/"+uid+"_"+file.originalname
+                    filePath = __dirname+ fileReference
+                }
+
+                // if the image is saved correctly, update user documents, otherwise dont
+                let check = await ImageService(filePath, file)
+                if (check) {
+                    docList.push({
+                        name: file.fieldname,
+                        reference: fileReference
+                    })
+                }
+            }
+
+            user = await UserService.addDocuments(uid, docList)
+            return res.send({status: "success", payload: user})
+
+        } catch (err) {
+            return res.status(400).send({status:"Error", error: err.message})
         }
     }
 }
